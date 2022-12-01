@@ -8,7 +8,7 @@ export default function WaitlistQueue() {
     const [users, setUsers] = useState<Student[]>(students);
 
     function addToWaitlist() {
-        const newStudent: Student = {name:'Mr. Peaches', email:'mr.peaches@brown.edu', position:5}
+        const newStudent: Student = {name:'Mr. Peaches', email:'mr.peaches@brown.edu', position:users.length + 1}
         const newUsers = users.slice();
         newUsers.push(newStudent)
         setUsers(newUsers);
