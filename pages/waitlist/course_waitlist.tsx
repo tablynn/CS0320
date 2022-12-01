@@ -1,5 +1,4 @@
 import React from 'react'
-import Grid from '@mui/material/Grid';
 import Header from '../header'
 import Footer from '../footer';
 import WaitlistHeader from '../../components/WaitlistHeader';

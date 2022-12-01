@@ -1,4 +1,6 @@
-const students = [
+import { Student } from "../util/interfaces/Student";
+
+const students: Student[] = [
     {
         name: 'Calvin Eng',
         email: 'calvin_eng@brown.edu',

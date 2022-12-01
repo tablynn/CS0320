@@ -1,21 +1,33 @@
 import { Button, Typography, Box, Grid, Stack } from "@mui/material";
 import WaitlistQueueItem from "./WaitlistQueueItem";
 import { students } from "../mocks/sample_students";
+import { useState } from "react";
+import { Student } from "../util/interfaces/Student";
 
 export default function WaitlistQueue() {
+    const [users, setUsers] = useState<Student[]>(students);
+
+    function addToWaitlist() {
+        const newStudent: Student = {name:'Mr. Peaches', email:'mr.peaches@brown.edu', position:5}
+        const newUsers = users.slice();
+        newUsers.push(newStudent)
+        setUsers(newUsers);
+    }
+    
     return (
         <Grid item xs={12} md={9}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="h6" fontWeight={600}>
                     Queue
                 </Typography>
-                <Button variant="contained">
+                <Button variant="contained"
+                        onClick={addToWaitlist}>
                         Join Queue
                 </Button>
             </Stack>
             <Box mt={1}>
                 <Stack spacing={1}>
-                    {students.map((student, index) => (
+                    {users.map((student, index) => (
                         <WaitlistQueueItem key={student.name} student={student}/>
                     ))}
                 </Stack>
