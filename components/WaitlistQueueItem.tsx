@@ -1,12 +1,5 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
-
-interface StudentProps {
-    student: {
-      name: string;
-      email: string;
-      position: number;
-    };
-  }
+import { StudentProps } from "../util/interfaces/Student";
 
 export default function WaitlistQueueItem(props: StudentProps) {
     const { student } = props;
