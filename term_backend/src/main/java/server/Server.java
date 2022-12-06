@@ -1,9 +1,6 @@
 package server;
 
 import static spark.Spark.after;
-
-import java.util.ArrayList;
-import java.util.List;
 import spark.Spark;
 
 /**
@@ -26,7 +23,9 @@ public class Server {
     });
 
     // Setting up the handler for GET and the endpoints
-    //Spark.get("getData", new GetDataHandler());
+    Spark.get("getCourseData", new GetCoursesHandler());
+    Spark.get("addStudent", new AddStudentHandler());
+    Spark.get("removeStudent", new RemoveStudentHandler());
     Spark.init();
     Spark.awaitInitialization();
     System.out.println("Server started.");
