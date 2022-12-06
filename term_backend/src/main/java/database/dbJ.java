@@ -8,15 +8,14 @@ import java.sql.Connection;
 
 public class dbJ {
   public static void main(String[] args) throws SQLException, ClassNotFoundException {
-    // this line loads the driver manager class, and must be
-// present for everything else to work properly
+    // This line loads the driver manager class, and must be
+    // present for everything else to work properly
     Class.forName("org.sqlite.JDBC");
     String urlToDB = "jdbc:sqlite:" + "waitlist.sqlite3";
     Connection conn = DriverManager.getConnection(urlToDB);
-// these two lines tell the database to enforce foreign keys during operations, and should be present
+    // These two lines tell the database to enforce foreign keys during operations, and should be present
     Statement stat = conn.createStatement();
     stat.executeUpdate("PRAGMA foreign_keys=ON;");
-
 
     PreparedStatement prep;
 
