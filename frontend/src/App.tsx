@@ -5,11 +5,16 @@ import { BrowserRouter as Router, Routes, Route}
 import DetailPage from '../src/pages/DetailPage';
 import ReactDOM from 'react-dom'
 
+
 function App(){
   return(
     <div className="App">
       <Waitlist />
+
+      
     </div>
+
+
   )
 }
 export default App;
