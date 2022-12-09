@@ -60,7 +60,7 @@ public class AddStudentHandler implements Route{
       // If student doesn't exist in "students" table, add student to it
       if(studentExistsInStudents == false){
         System.out.println("student " + studentName + " does not exist in 'students' table");
-        studentID = this.addtoStudents(prep, conn, rs, studentName);
+        studentID = this.addtoStudents(prep, conn, rs, studentName, studentEmail, studentYear);
         System.out.println("student " + studentName + " was added to 'students' table at " + studentID);
       } else {
         System.out.println("student " + studentName + " already exists in 'students table");
@@ -79,7 +79,6 @@ public class AddStudentHandler implements Route{
         this.addToEnrollments(prep, conn, rs, studentID, classID);
       } else {
         System.out.println("student already exists in 'enrollments' table with the correct course");
-
       }
 
       // Return: list of names of students in waitlist in order for that specific course
@@ -90,7 +89,6 @@ public class AddStudentHandler implements Route{
     } catch (ClassNotFoundException f){
       System.out.println("caught this exception: " + f);
     }
-
     return studentWaitlist;
   }
 
@@ -123,7 +121,7 @@ public class AddStudentHandler implements Route{
     return studentExistsInEnrollmentsWithCorrectClass;
   }
 
-  private Integer addtoStudents(PreparedStatement prep, Connection conn, ResultSet rs, String studentName)
+  private Integer addtoStudents(PreparedStatement prep, Connection conn, ResultSet rs, String studentName, String studentEmail, String studentYear)
       throws SQLException {
     Integer studentID = 0;
     // Find max student_id
@@ -134,17 +132,14 @@ public class AddStudentHandler implements Route{
     }
 
     // Insert new student into "students" table
-        /*
-        prep = conn.prepareStatement(
-            "INSERT INTO students VALUES (?, ?, ?, ?);");
+    prep = conn.prepareStatement("INSERT INTO students VALUES (?, ?, ?, ?);");
+    prep.setInt(1, studentID);
+    prep.setString(2, studentName);
+    prep.setString(3, studentEmail);
+    prep.setString(4, studentYear);
+    prep.addBatch();
+    prep.executeBatch();
 
-        prep.setInt(1, studentID);
-        prep.setString(2, studentName);
-        prep.setString(3, studentEmail);
-        prep.setString(4, studentYear);
-        prep.addBatch();
-        prep.executeBatch();
-         */
     return studentID;
   }
 
@@ -161,16 +156,13 @@ public class AddStudentHandler implements Route{
     }
 
     // Insert new student/course pair into 'enrollments' table
-        /*
-        prep = conn.prepareStatement(
-        "INSERT INTO enrollments VALUES (?, ?, ?);");
-
+        prep = conn.prepareStatement("INSERT INTO enrollments VALUES (?, ?, ?);");
         prep.setInt(1, enrollID);
         prep.setInt(2, studentID);
         prep.setInt(3, classID);
         prep.addBatch();
         prep.executeBatch();
-         */
+
     System.out.println("studentID " + studentID + " and classID " + classID + " were added to 'enrollments' at enrollID " + enrollID);
   }
 
