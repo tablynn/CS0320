@@ -19,7 +19,7 @@ public class dbJ {
 
     PreparedStatement prep;
 
-    //prep = conn.prepareStatement("DROP TABLE enrollment");
+    //prep = conn.prepareStatement("DROP TABLE enrollments");
     //prep.executeUpdate();
     //prep = conn.prepareStatement("DROP TABLE classes");
     //prep.executeUpdate();
@@ -29,6 +29,7 @@ public class dbJ {
         + "class_id INTEGER,"
         + "title TEXT,"
         + "instructorName TEXT,"
+        + "description TEXT,"
         + "PRIMARY KEY (class_id))");
     //+ "FOREIGN KEY (instructorName) REFERENCES instructor(instr_id)"
     //+ "ON DELETE CASCADE ON UPDATE CASCADE);");
@@ -36,74 +37,77 @@ public class dbJ {
 
 
 
-    /**
+
     prep = conn.prepareStatement(
-        "INSERT INTO classes VALUES (?, ?, ?);");
+        "INSERT INTO classes VALUES (?, ?, ?,?);");
     prep.setInt(1, 1);
-    prep.setString(2, "Introduction to Software Engineering");
+    prep.setString(2, "CSCI 0320: Introduction to Software Engineering");
     prep.setString(3, "Tim Nelson");
+    prep.setString(4,"Focuses on designing, building, testing, and maintaining systems collaboratively.");
     prep.addBatch();
 
     prep.setInt(1, 2);
-    prep.setString(2, "Fundamentals of Computer Systems");
+    prep.setString(2, "CSCI 0330: Fundamentals of Computer Systems");
     prep.setString(3, "Matte Schwarzkpof");
+    prep.setString(4,"Covers fundamental concepts, principles, and abstractions that underlie the design and engineering of computer systems.");
     prep.addBatch();
 
     prep.setInt(1, 3);
-    prep.setString(2, "Accelerated Introduction to CS");
+    prep.setString(2, "CSCI 0190: Accelerated Introduction to CS");
     prep.setString(3, "Tim Nelson");
+    prep.setString(4,"A one-semester introduction to CS covering programming integrated with core data structures, algorithms, and analysis techniques, similar to the two-course introductory sequences.");
     prep.addBatch();
 
     prep.setInt(1, 4);
-    prep.setString(2, "Deep Learning");
+    prep.setString(2, "CSCI 1470: Deep Learning");
     prep.setString(3, "Ritambhara Singh");
+    prep.setString(4,". In this course, you will get an overview of the prominent techniques of deep learning and their applications.");
     prep.addBatch();
 
     prep.executeBatch();
-     */
+
 
     prep = conn.prepareStatement("CREATE TABLE IF NOT EXISTS students("
         + "student_id INTEGER,"
         + "name TEXT,"
         + "email TEXT,"
-        + "year INTEGER,"
         + "PRIMARY KEY (student_id))");
     //+ "FOREIGN KEY (instructorName) REFERENCES instructor(instr_id)"
     //+ "ON DELETE CASCADE ON UPDATE CASCADE);");
     prep.executeUpdate();
 
 
-    /**
+
 
     prep = conn.prepareStatement(
-        "INSERT INTO students VALUES (?, ?, ?, ?);");
+        "INSERT INTO students VALUES (?, ?, ?);");
 
     prep.setInt(1, 1);
     prep.setString(2, "Tabitha Lynn");
     prep.setString(3, "tlynn1@brown.edu");
-    prep.setString(4, "Sophomore");
+    //prep.setString(4, "Sophomore");
     prep.addBatch();
 
     prep.setInt(1, 2);
     prep.setString(2, "Calvin Eng");
     prep.setString(3, "ceng4@brown.edu");
-    prep.setString(4, "Sophomore");
+   // prep.setString(4, "Sophomore");
     prep.addBatch();
 
     prep.setInt(1, 3);
     prep.setString(2, "Shravya Sompalli");
     prep.setString(3, "shravya_sompalli@brown.edu");
-    prep.setString(4, "Sophomore");
+    //prep.setString(4, "Sophomore");
     prep.addBatch();
 
     prep.setInt(1, 4);
     prep.setString(2, "Aanya Hudda");
     prep.setString(3, "ahudda1@brown.edu");
-    prep.setString(4, "Sophomore");
+   //prep.setString(4, "Sophomore");
     prep.addBatch();
 
-    prep.executeBatch();8
-     */
+    prep.executeBatch();
+
 
 
 
@@ -120,7 +124,7 @@ public class dbJ {
     prep.executeUpdate();
 
 
-    /**
+
     prep = conn.prepareStatement(
         "INSERT INTO enrollments VALUES (?, ?, ?);");
 
@@ -139,11 +143,11 @@ public class dbJ {
     prep.setInt(3, 3);
     prep.addBatch();
     prep.executeBatch();
-     */
 
 
 
-    /**
+
+/**
 
     PreparedStatement instructorPrep;
     instructorPrep = conn.prepareStatement("DROP TABLE instructor");
@@ -171,7 +175,8 @@ public class dbJ {
     instructorPrep.executeBatch();
 
 
-    PreparedStatement prep;
+
+    //PreparedStatement prep;
     prep = conn.prepareStatement("DROP TABLE cs_classes");
     prep.executeUpdate();
     //prep = conn.prepareStatement("DROP TABLE instructor");
@@ -208,7 +213,8 @@ public class dbJ {
     prep.addBatch();
 
     prep.executeBatch();
-*/
+     */
+
 
   }
 }
