@@ -19,4 +19,13 @@ export default function Home() {
       <Footer title='Created by Calvin Eng' description='with minimal help from Tabitha Lynn'/>
     </div>
   );
+  
+}
+
+const CourseData_URL = "http://localhost:3231/getCourseData";
+
+async function redliningData(): Promise<[string, string][]> {
+  const r = await fetch(CourseData_URL);
+  const json = await r.json();
+  return json.data;
 }

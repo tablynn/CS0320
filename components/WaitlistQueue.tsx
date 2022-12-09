@@ -8,7 +8,7 @@ interface WaitlistProps {
    courseName: string;
 }
  
-export default function WaitlistQueue() {
+export default function WaitlistQueue({ courseName }: WaitlistProps) {
    const [users, setUsers] = useState<Student[]>(students);
  
    function addToWaitlist() {

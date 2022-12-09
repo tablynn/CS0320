@@ -14,7 +14,7 @@ export default function CourseWaitlist() {
      <Header title='Computer Science Course Waitlists'/>
      <br></br>
      <WaitlistHeader courseName={courseName as string}/>
-     <WaitlistStack></WaitlistStack>
+     <WaitlistStack courseName={courseName as string}/>
      <Footer title='Created by Calvin Eng' description='with minimal help from Tabitha Lynn'/>
    </div>
  )
