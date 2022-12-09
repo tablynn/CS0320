@@ -67,7 +67,7 @@ public class AddStudentHandler implements Route{
       }
 
       // Get class_id from "classes" table
-      String classID = this.getClassID(prep, conn, rs, className);
+      Integer classID = this.getClassID(prep, conn, rs, className);
       System.out.println("the class " + className + " has classID " + classID);
 
       // Check if student exists in "enrollments" table with the correct course
@@ -94,29 +94,29 @@ public class AddStudentHandler implements Route{
     return studentWaitlist;
   }
 
-  private String getClassID(PreparedStatement prep, Connection conn, ResultSet rs, String className)
+  private Integer getClassID(PreparedStatement prep, Connection conn, ResultSet rs, String className)
       throws SQLException {
     prep = conn.prepareStatement("select * from classes WHERE title = ?");
     prep.setString(1, className);
     rs = prep.executeQuery();
-    String classID = "";
+    Integer classID = 0;
 
     while (rs.next()) {
-      classID = rs.getString(1);
+      classID = rs.getInt(1);
     }
     return classID;
   }
 
-  private Boolean checkIfStudentExistsInEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, String classID)
+  private Boolean checkIfStudentExistsInEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, Integer classID)
       throws SQLException {
     prep = conn.prepareStatement("select * from enrollments WHERE student_id = ?");
-    prep.setString(1, studentID.toString());
+    prep.setInt(1, studentID);
     rs = prep.executeQuery();
     Boolean studentExistsInEnrollmentsWithCorrectClass = false;
 
     while(rs.next()){
-      String currClassID = rs.getString(3);
-      if(currClassID.equals(classID)){
+      Integer currClassID = rs.getInt(3);
+      if(currClassID == classID){
         studentExistsInEnrollmentsWithCorrectClass = true;
       }
     }
@@ -125,14 +125,12 @@ public class AddStudentHandler implements Route{
 
   private Integer addtoStudents(PreparedStatement prep, Connection conn, ResultSet rs, String studentName)
       throws SQLException {
-    Integer maxStudentID = 0;
     Integer studentID = 0;
     // Find max student_id
     prep = conn.prepareStatement("SELECT MAX(student_id) from students");
     rs = prep.executeQuery();
     while(rs.next()){
-      maxStudentID = rs.getInt(1);
-      studentID = maxStudentID + 1;
+      studentID = rs.getInt(1) + 1;
     }
 
     // Insert new student into "students" table
@@ -150,7 +148,7 @@ public class AddStudentHandler implements Route{
     return studentID;
   }
 
-  private void addToEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, String classID)
+  private void addToEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, Integer classID)
       throws SQLException {
     Integer enrollID = 0;
 
@@ -169,20 +167,20 @@ public class AddStudentHandler implements Route{
 
         prep.setInt(1, enrollID);
         prep.setInt(2, studentID);
-        prep.setInt(3, classID.toInt());
+        prep.setInt(3, classID);
         prep.addBatch();
         prep.executeBatch();
          */
     System.out.println("studentID " + studentID + " and classID " + classID + " were added to 'enrollments' at enrollID " + enrollID);
   }
 
-  private List<String> createReturnedWaitlist(PreparedStatement prep, Connection conn, ResultSet rs, String classID)
+  private List<String> createReturnedWaitlist(PreparedStatement prep, Connection conn, ResultSet rs, Integer classID)
       throws SQLException {
     List<String> studentWaitlist = new ArrayList<String>();
     List<String> studentIDList = new ArrayList<String>();
 
     prep = conn.prepareStatement("select * from enrollments WHERE class_id = ?");
-    prep.setString(1, classID);
+    prep.setInt(1, classID);
     rs = prep.executeQuery();
 
     while(rs.next()){
