@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.sql.Connection;
 
 // Query Parameters: student name, student email, class_id
-// http://localhost:3231/addStudent?studentName=Christine%20Wu&email=christine_wu@brown.edu&className=CSCI%201470:%20Deep%20Learning
+// http://localhost:3231/getCourseWaitlist?studentName=Christine%20Wu&email=christine_wu@brown.edu&className=CSCI%201470:%20Deep%20Learning
 
 public class AddStudentHandler implements Route{
   @Override
