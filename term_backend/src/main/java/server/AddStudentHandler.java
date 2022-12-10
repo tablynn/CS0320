@@ -13,7 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
 
-//Query Parameters: student name, student email, class_id
+// Query Parameters: student name, student email, class_id
+// http://localhost:3231/addStudent?studentName=Christine%20Wu&email=christine_wu@brown.edu&className=CSCI%201470:%20Deep%20Learning
 
 public class AddStudentHandler implements Route{
   @Override
@@ -131,11 +132,13 @@ public class AddStudentHandler implements Route{
     }
 
     // Insert new student into "students" table
-    prep = conn.prepareStatement("INSERT INTO students VALUES (?, ?, ?, ?);");
+    prep = conn.prepareStatement("INSERT INTO students VALUES (?, ?, ?);");
     prep.setInt(1, studentID);
     prep.setString(2, studentName);
     prep.setString(3, studentEmail);
     prep.addBatch();
+    prep.executeBatch();
+
     prep.executeBatch();
 
     return studentID;
@@ -153,6 +156,7 @@ public class AddStudentHandler implements Route{
       enrollID = enrollID + 1;
     }
 
+    System.out.println("enrollments table: enroll ID: " + enrollID + " studentID: " + studentID + " classID: " + classID);
     // Insert new student/course pair into 'enrollments' table
         prep = conn.prepareStatement("INSERT INTO enrollments VALUES (?, ?, ?);");
         prep.setInt(1, enrollID);
