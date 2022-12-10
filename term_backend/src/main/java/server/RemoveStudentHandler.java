@@ -52,13 +52,27 @@ public class RemoveStudentHandler implements Route {
 
       // Get student_id from 'students' table
       Integer studentID = this.getStudentID(prep, conn, rs, studentName);
+      System.out.println("the student " + studentName + " has studentID " + studentID);
 
       // Check if classID-studentID pair exists in 'enrollments' table
-      Boolean studentExistsInEnrollmentsWithCorrectClass = this.checkIfStudentExistsInEnrollments(prep, conn, rs, studentID, classID);
+      prep = conn.prepareStatement("select * from enrollments WHERE student_id = ?");
+      prep.setInt(1, studentID);
+      rs = prep.executeQuery();
+      Boolean studentExistsInEnrollmentsWithCorrectClass = false;
+      Integer enrollID = 0;
+
+      while(rs.next()){
+        Integer currClassID = rs.getInt(3);
+        if(currClassID == classID){
+          studentExistsInEnrollmentsWithCorrectClass = true;
+          enrollID = rs.getInt(1);
+        }
+      }
 
       // If pair exists, remove pair from 'enrollments' table
       if(studentExistsInEnrollmentsWithCorrectClass){
-        // CALL HELPER METHOD TO REMOVE PAIR
+        this.removeStudent(prep, conn, rs, enrollID);
+        System.out.println("removed the pair: studentID= " + studentID + " classID= " + classID + " from enrollments table");
       }
 
       // Return: list of names of students in waitlist in order for that specific course
@@ -70,7 +84,6 @@ public class RemoveStudentHandler implements Route {
       System.out.println("caught this exception: " + f);
     }
 
-    System.out.println("created list of student names to be returned: " + studentWaitlist);
     return studentWaitlist;
   }
 
@@ -100,20 +113,13 @@ public class RemoveStudentHandler implements Route {
     return studentID;
   }
 
-  private Boolean checkIfStudentExistsInEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, Integer classID)
+  private void removeStudent(PreparedStatement prep, Connection conn, ResultSet rs, Integer enrollID)
       throws SQLException {
-    prep = conn.prepareStatement("select * from enrollments WHERE student_id = ?");
-    prep.setInt(1, studentID);
-    rs = prep.executeQuery();
-    Boolean studentExistsInEnrollmentsWithCorrectClass = false;
 
-    while(rs.next()){
-      Integer currClassID = rs.getInt(3);
-      if(currClassID == classID){
-        studentExistsInEnrollmentsWithCorrectClass = true;
-      }
-    }
-    return studentExistsInEnrollmentsWithCorrectClass;
+    prep = conn.prepareStatement("DELETE FROM enrollments WHERE enroll_id = ?");
+    prep.setInt(1, enrollID);
+    prep.executeUpdate();
+    System.out.println("removing the enrollID: " + enrollID);
   }
 
   private List<String> createReturnedWaitlist(PreparedStatement prep, Connection conn, ResultSet rs, Integer classID)
