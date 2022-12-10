@@ -42,19 +42,12 @@ public class GetCourseWaitlistHandler implements Route {
       Connection conn = DriverManager.getConnection(urlToDB);
       Statement stat = conn.createStatement();
       stat.executeUpdate("PRAGMA foreign_keys=ON;");
-      PreparedStatement prep;
-      ResultSet rs;
+      PreparedStatement prep = null;
+      ResultSet rs = null;
 
-      // get classID for the given className
-      prep = conn.prepareStatement("select * from classes WHERE title = ?");
-      prep.setString(1, className);
-      rs = prep.executeQuery();
-      Integer classID = 0;
-
-      while(rs.next()){
-        classID = rs.getInt(1);
-        System.out.println("classID of class: " + classID);
-      }
+      // Get class_id from "classes" table
+      Integer classID = this.getClassID(prep, conn, rs, className);
+      System.out.println("the class " + className + " has classID " + classID);
 
       // use classID to get all the students on that waitlist
       List<String> studentIDList = new ArrayList<String>();
@@ -95,4 +88,16 @@ public class GetCourseWaitlistHandler implements Route {
     return courseInformation;
   }
 
+  private Integer getClassID(PreparedStatement prep, Connection conn, ResultSet rs, String className)
+      throws SQLException {
+    prep = conn.prepareStatement("select * from classes WHERE title = ?");
+    prep.setString(1, className);
+    rs = prep.executeQuery();
+    Integer classID = 0;
+
+    while (rs.next()) {
+      classID = rs.getInt(1);
+    }
+    return classID;
+  }
 }
