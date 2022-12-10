@@ -35,7 +35,7 @@ public class RemoveStudentHandler implements Route {
   }
 
   public List<String> handleTables(String studentName, String className){
-    List<String> courseInformation = new ArrayList<String>();
+    List<String> studentWaitlist = new ArrayList<String>();
 
     try {
       Class.forName("org.sqlite.JDBC");
@@ -58,10 +58,11 @@ public class RemoveStudentHandler implements Route {
 
       // If pair exists, remove pair from 'enrollments' table
       if(studentExistsInEnrollmentsWithCorrectClass){
-        courseInformation.add("student exists in enrollments table with correct class");
-      } else {
-        courseInformation.add("student doesn't exist in enrollments table with correct class so cannot be removed");
+        // CALL HELPER METHOD TO REMOVE PAIR
       }
+
+      // Return: list of names of students in waitlist in order for that specific course
+      studentWaitlist = this.createReturnedWaitlist(prep, conn, rs, classID);
 
     } catch (SQLException e){
       System.out.println("caught this exception: " + e);
@@ -69,8 +70,8 @@ public class RemoveStudentHandler implements Route {
       System.out.println("caught this exception: " + f);
     }
 
-    System.out.println("created list of student names to be returned: " + courseInformation);
-    return courseInformation;
+    System.out.println("created list of student names to be returned: " + studentWaitlist);
+    return studentWaitlist;
   }
 
   private Integer getClassID(PreparedStatement prep, Connection conn, ResultSet rs, String className)
@@ -113,5 +114,32 @@ public class RemoveStudentHandler implements Route {
       }
     }
     return studentExistsInEnrollmentsWithCorrectClass;
+  }
+
+  private List<String> createReturnedWaitlist(PreparedStatement prep, Connection conn, ResultSet rs, Integer classID)
+      throws SQLException {
+    List<String> studentWaitlist = new ArrayList<String>();
+    List<String> studentIDList = new ArrayList<String>();
+
+    prep = conn.prepareStatement("select * from enrollments WHERE class_id = ?");
+    prep.setInt(1, classID);
+    rs = prep.executeQuery();
+
+    while(rs.next()){
+      studentIDList.add(rs.getString(2));
+    }
+    System.out.println("created a list of relevant student IDs: " + studentIDList);
+
+    prep = conn.prepareStatement("select * from students WHERE student_id = ?");
+    for (int i = 0; i < studentIDList.size(); i++){
+      prep.setString(1, studentIDList.get(i));
+      rs = prep.executeQuery();
+
+      while(rs.next()){
+        studentWaitlist.add(rs.getString(2));
+      }
+    }
+    System.out.println("created list of student names to be returned: " + studentWaitlist);
+    return studentWaitlist;
   }
 }
