@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
 
+// http://localhost:3231/getCourseData
+
 public class GetCoursesHandler implements Route{
 
   @Override
@@ -35,10 +37,12 @@ public class GetCoursesHandler implements Route{
         List<String> tempList = new ArrayList<String>();
         String title = rs.getString(2);
         String instructor = rs.getString(3);
+        String description = rs.getString(4);
         tempList.add(title);
         tempList.add(instructor);
+        tempList.add(description);
         courseInformation.add(tempList);
-        System.out.println("info: " + title + " " + instructor + " ");
+        System.out.println("info: " + title + " " + instructor + " " + description);
       }
 
     } catch (SQLException e){
@@ -48,6 +52,4 @@ public class GetCoursesHandler implements Route{
     }
     return courseInformation;
   }
-
-
 }

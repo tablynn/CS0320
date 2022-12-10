@@ -24,6 +24,7 @@ public class Server {
 
     // Setting up the handler for GET and the endpoints
     Spark.get("getCourseData", new GetCoursesHandler());
+    Spark.get("getCourseWaitlist", new GetCourseWaitlistHandler());
     Spark.get("addStudent", new AddStudentHandler());
     Spark.get("removeStudent", new RemoveStudentHandler());
     Spark.init();
