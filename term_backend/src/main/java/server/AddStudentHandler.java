@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
 
-//Query Parameters: student name, student email, student year, class_id
+//Query Parameters: student name, student email, class_id
 
 public class AddStudentHandler implements Route{
   @Override
@@ -21,20 +21,19 @@ public class AddStudentHandler implements Route{
     QueryParamsMap qm = request.queryMap();
 
     // If the query parameters are valid ...
-    if (qm.hasKey("studentName") && qm.hasKey("email") && qm.hasKey("year") && qm.hasKey("className")){
+    if (qm.hasKey("studentName") && qm.hasKey("email") && qm.hasKey("className")){
       String studentName = qm.value("studentName");
       String studentEmail = qm.value("email");
-      String studentYear = qm.value("year");
       String className = qm.value("className");
 
-      return handleTables(studentName, studentEmail, studentYear, className);
+      return handleTables(studentName, studentEmail, className);
 
     } else {
       return "failure with the provided query parameters";
     }
   }
 
-  public List<String> handleTables(String studentName, String studentEmail, String studentYear, String className){
+  public List<String> handleTables(String studentName, String studentEmail, String className){
     List<String> studentWaitlist = new ArrayList<String>();
     try {
       Class.forName("org.sqlite.JDBC");
@@ -60,7 +59,7 @@ public class AddStudentHandler implements Route{
       // If student doesn't exist in "students" table, add student to it
       if(studentExistsInStudents == false){
         System.out.println("student " + studentName + " does not exist in 'students' table");
-        studentID = this.addtoStudents(prep, conn, rs, studentName, studentEmail, studentYear);
+        studentID = this.addToStudents(prep, conn, rs, studentName, studentEmail);
         System.out.println("student " + studentName + " was added to 'students' table at " + studentID);
       } else {
         System.out.println("student " + studentName + " already exists in 'students table");
@@ -121,7 +120,7 @@ public class AddStudentHandler implements Route{
     return studentExistsInEnrollmentsWithCorrectClass;
   }
 
-  private Integer addtoStudents(PreparedStatement prep, Connection conn, ResultSet rs, String studentName, String studentEmail, String studentYear)
+  private Integer addToStudents(PreparedStatement prep, Connection conn, ResultSet rs, String studentName, String studentEmail)
       throws SQLException {
     Integer studentID = 0;
     // Find max student_id
@@ -136,7 +135,6 @@ public class AddStudentHandler implements Route{
     prep.setInt(1, studentID);
     prep.setString(2, studentName);
     prep.setString(3, studentEmail);
-    prep.setString(4, studentYear);
     prep.addBatch();
     prep.executeBatch();
 
