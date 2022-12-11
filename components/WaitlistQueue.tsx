@@ -1,38 +1,43 @@
+import React, { useEffect, useState } from 'react'
 import { Button, Typography, Box, Grid, Stack } from "@mui/material";
 import WaitlistQueueItem from "./WaitlistQueueItem";
-import { students } from "../mocks/sample_students";
-import { useState } from "react";
-import { Student } from "../util/interfaces/StudentProps";
  
 interface WaitlistProps {
    courseName: string;
 }
  
 export default function WaitlistQueue({ courseName }: WaitlistProps) {
-   const [users, setUsers] = useState<Student[]>(students);
+    const [waitlist, setWaitlist] = useState<[string, string][]>([]);
+    useEffect(() => {
+        fetchWaitlist().then((data) => setWaitlist(data))
+    }, []) 
+
+    const CourseWaitlist_URL = "http://localhost:3231/getCourseWaitlist?className=" + courseName;
+    async function fetchWaitlist(): Promise<[string, string][]> {
+        const r = await fetch(CourseWaitlist_URL);
+        const json = await r.json();
+        return await (json as Promise<[string, string][]>);
+    }
  
-   function addToWaitlist() {
-       const newStudent: Student = {name:'Mr. Peaches', email:'mr.peaches@brown.edu', position:users.length + 1}
-       const newUsers = users.slice();
-       newUsers.push(newStudent)
-       setUsers(newUsers);
-   }
-  
-   return (
-       <Grid item xs={12} md={9}>
-           <Stack direction="row" justifyContent="space-between" alignItems="center">
-               <Typography variant="h6" fontWeight={600}>
+    const WaitlistUpdate_URL = "http://localhost:3231/getCourseWaitlist?className="
+    async function addToWaitlist() {
+        const r = await fetch(WaitlistUpdate_URL);
+    }
+    
+    return (
+        <Grid item xs={12} md={9}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant="h6" fontWeight={600}>
                    Queue
                </Typography>
-               <Button variant="contained"
-                       onClick={addToWaitlist}>
+               <Button variant="contained">
                        Join Queue
                </Button>
            </Stack>
            <Box mt={1}>
                <Stack spacing={1}>
-                   {users.map((student, index) => (
-                       <WaitlistQueueItem key={student.name} student={student}/>
+                   {waitlist.map((student, index) => (
+                       <WaitlistQueueItem key={student.at(0)} name={student.at(0)} email={student.at(1)} position={index + 1}/>
                    ))}
                </Stack>
            </Box>

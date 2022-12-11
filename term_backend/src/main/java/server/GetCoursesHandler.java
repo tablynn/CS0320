@@ -4,7 +4,6 @@ import com.squareup.moshi.Moshi;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;

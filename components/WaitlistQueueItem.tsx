@@ -1,16 +1,12 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
 
 interface StudentProps {
-    student: {
-      name: string;
-      email: string;
-      position: number;
-    };
+    name: string;
+    email: string;
+    position: number;
 }
 
-export default function WaitlistQueueItem(props: StudentProps) {
-    const { student } = props;
-
+export default function WaitlistQueueItem({ name, email, position }: StudentProps) {
     return (
         <Paper variant={"outlined"}>
             <Box px={2.5} py={2}>
@@ -19,7 +15,7 @@ export default function WaitlistQueueItem(props: StudentProps) {
                         <Box overflow={"hidden"}>
                             <Stack direction="row" spacing={1}>
                                 <Typography fontSize={16} fontWeight={600}>
-                                    {student.position}. {student.name} ({student.email})
+                                    {position}. {name} ({email})
                                 </Typography>
                             </Stack>
                         </Box>

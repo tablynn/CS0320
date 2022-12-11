@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../header'
 import Footer from '../footer';
 import WaitlistHeader from '../../components/WaitlistHeader';
-import WaitlistStack from '../../components/WaitlistQueue';
+import WaitlistQueue from '../../components/WaitlistQueue';
 import { useRouter } from "next/router";
  
 export default function CourseWaitlist() {
@@ -14,7 +14,8 @@ export default function CourseWaitlist() {
      <Header title='Computer Science Course Waitlists'/>
      <br></br>
      <WaitlistHeader courseName={courseName as string}/>
-     <WaitlistStack courseName={courseName as string}/>
+     <br></br>
+     <WaitlistQueue courseName={courseName as string}/>
      <Footer title='Created by Calvin Eng' description='with minimal help from Tabitha Lynn'/>
    </div>
  )

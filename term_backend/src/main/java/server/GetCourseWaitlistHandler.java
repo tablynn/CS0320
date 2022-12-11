@@ -1,5 +1,6 @@
 package server;
 
+import com.squareup.moshi.Moshi;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -25,15 +26,13 @@ public class GetCourseWaitlistHandler implements Route {
     // If the query parameters are valid ...
     if (qm.hasKey("className")){
       String className = qm.value("className");
-
       return handleTables(className);
-
     } else {
       return "failure with the provided query parameters";
     }
   }
 
-  public List<List<String>> handleTables(String className){
+  public Object handleTables(String className){
     List<List<String>> courseInformation = new ArrayList<List<String>>();
 
     try {
@@ -85,7 +84,10 @@ public class GetCourseWaitlistHandler implements Route {
     }
 
     System.out.println("created list of student names to be returned: " + courseInformation);
-    return courseInformation;
+
+    // Serializes responses into JSON format
+    Moshi moshi = new Moshi.Builder().build();
+    return moshi.adapter(List.class).toJson(courseInformation);
   }
 
   private Integer getClassID(PreparedStatement prep, Connection conn, ResultSet rs, String className)
