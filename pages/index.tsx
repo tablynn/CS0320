@@ -6,6 +6,11 @@ import Class from './class';
 import Footer from './footer'
 import { classes } from '../mocks/sample_classes';
 
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import Image from 'next/image'
+import { useSession, signIn, signOut } from "next-auth/react"
+
 export default function Home() {
   return (
     <div className={styles.container}>

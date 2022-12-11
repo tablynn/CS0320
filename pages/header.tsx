@@ -37,10 +37,10 @@ export default function Header(props: HeaderProps) {
         <IconButton>
           <SearchIcon />
         </IconButton>
-        <Button variant="outlined" size="small">
+        {/* <Button variant="outlined" size="small">
           Sign in
-        </Button> 
-        {/* <GoogleOAuth/> */}
+        </Button>  */}
+        <GoogleOAuth/>
       </Toolbar>
     </React.Fragment>
   );
