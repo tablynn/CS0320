@@ -2,7 +2,7 @@ import { Button, Typography, Box, Grid, Stack } from "@mui/material";
 import WaitlistQueueItem from "./WaitlistQueueItem";
 import { students } from "../mocks/sample_students";
 import { useState } from "react";
-import { Student } from "../util/interfaces/Student";
+import { Student } from "../util/interfaces/StudentProps";
  
 interface WaitlistProps {
    courseName: string;

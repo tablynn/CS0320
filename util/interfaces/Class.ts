@@ -1,8 +1,7 @@
-interface ClassProps {
-    course: {
-      courseName: string;
-      professor: string;
-    };
+interface Class {
+    courseName: string;
+    professor: string;
+    description: string;
 }
 
-export type { ClassProps };
+export type { Class };
