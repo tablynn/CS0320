@@ -1,4 +1,4 @@
-import { Student } from "../util/interfaces/Student";
+import { Student } from "../util/interfaces/StudentProps";
 
 const students: Student[] = [
     {

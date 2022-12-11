@@ -55,13 +55,13 @@ public class dbJ {
     prep.setInt(1, 3);
     prep.setString(2, "CSCI 0190: Accelerated Introduction to CS");
     prep.setString(3, "Tim Nelson");
-    prep.setString(4,"A one-semester introduction to CS covering programming integrated with core data structures, algorithms, and analysis techniques, similar to the two-course introductory sequences.");
+    prep.setString(4,"A one-semester introduction to CS covering programming integrated with core data structures, algorithms, and analysis techniques.");
     prep.addBatch();
 
     prep.setInt(1, 4);
     prep.setString(2, "CSCI 1470: Deep Learning");
     prep.setString(3, "Ritambhara Singh");
-    prep.setString(4,". In this course, you will get an overview of the prominent techniques of deep learning and their applications.");
+    prep.setString(4,"In this course, you will get an overview of the prominent techniques of deep learning and their applications.");
     prep.addBatch();
 
     prep.executeBatch();

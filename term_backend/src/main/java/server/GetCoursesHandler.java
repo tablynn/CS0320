@@ -1,5 +1,6 @@
 package server;
 
+import com.squareup.moshi.Moshi;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,9 @@ public class GetCoursesHandler implements Route{
     } catch (ClassNotFoundException f){
       System.out.println("caught this exception: " + f);
     }
-    return courseInformation;
+
+    // Serializes responses into JSON format
+    Moshi moshi = new Moshi.Builder().build();
+    return moshi.adapter(List.class).toJson(courseInformation);
   }
 }
