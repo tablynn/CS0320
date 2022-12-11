@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react';
 import { Button, Typography, Box, Grid, Stack } from "@mui/material";
 import WaitlistQueueItem from "./WaitlistQueueItem";
  
@@ -7,6 +8,8 @@ interface WaitlistProps {
 }
  
 export default function WaitlistQueue({ courseName }: WaitlistProps) {
+    const { data: session } = useSession();
+
     const [waitlist, setWaitlist] = useState<[string, string][]>([]);
     useEffect(() => {
         fetchWaitlist().then((data) => setWaitlist(data))
@@ -19,18 +22,26 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
         return await (json as Promise<[string, string][]>);
     }
  
-    const WaitlistUpdate_URL = "http://localhost:3231/getCourseWaitlist?className="
-    async function addToWaitlist() {
-        const r = await fetch(WaitlistUpdate_URL);
+    const WaitlistUpdate_URL = "http://localhost:3231/addStudent?";
+    const studentName = "studentName=" + session?.user?.name;
+    const studentEmail = "email=" + session?.user?.email;
+    const className = "className=" + courseName;
+    async function addToWaitlist(): Promise<[string, string][]> {
+        const r = await fetch(WaitlistUpdate_URL + studentName + "&" + studentEmail + "&" + className);
+        const json = await r.json();
+        return await (json as Promise<[string, string][]>);
     }
     
     return (
         <Grid item xs={12} md={9}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="h6" fontWeight={600}>
-                   Queue
-               </Typography>
-               <Button variant="contained">
+                   Queue {session?.user?.email} {session?.user?.name}
+                </Typography>
+                <Button variant="contained" onClick={() => {
+                    addToWaitlist()
+                    fetchWaitlist().then((data) => setWaitlist(data));
+                }}>
                        Join Queue
                </Button>
            </Stack>
