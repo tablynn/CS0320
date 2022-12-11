@@ -192,6 +192,7 @@ public class AddStudentHandler implements Route{
       }
     }
     System.out.println("created list of student names to be returned: " + studentWaitlist);
+
     return studentWaitlist;
   }
 }
