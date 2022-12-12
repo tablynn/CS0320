@@ -8,13 +8,16 @@ interface WaitlistProps {
 }
  
 export default function WaitlistQueue({ courseName }: WaitlistProps) {
+    // access current user session
     const { data: session } = useSession();
 
+    // fetches and stores the current waitlist in order to display on page
     const [waitlist, setWaitlist] = useState<[string, string][]>([]);
     useEffect(() => {
         fetchWaitlist().then((data) => setWaitlist(data))
     }, []) 
 
+    // fetch for retrieving the course waitlist for the current course
     const CourseWaitlist_URL = "http://localhost:3231/getCourseWaitlist?className=" + courseName;
     async function fetchWaitlist(): Promise<[string, string][]> {
         const r = await fetch(CourseWaitlist_URL);
@@ -22,6 +25,7 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
         return await (json as Promise<[string, string][]>);
     }
  
+    // fetch for informing the backend that a new student is attempting to join
     const WaitlistUpdate_URL = "http://localhost:3231/addStudent?";
     const studentName = "studentName=" + session?.user?.name;
     const studentEmail = "email=" + session?.user?.email;
@@ -36,7 +40,7 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
         <Grid item xs={12} md={9}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="h6" fontWeight={600}>
-                   Queue {session?.user?.email} {session?.user?.name}
+                   Queue
                 </Typography>
                 <Button variant="contained" onClick={() => {
                     addToWaitlist()

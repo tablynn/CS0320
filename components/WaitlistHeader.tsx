@@ -16,9 +16,6 @@ export default function WaitlistHeader({ courseName }: WaitlistProps) {
                    {courseName}
                </Typography>
                <Stack direction="row" spacing={1} alignItems="center">
-                   {/* <Typography variant="h4" fontWeight={600}>
-                       {queue.title}
-                   </Typography> */}
                </Stack>
            </Box>
            </Box>

@@ -6,8 +6,8 @@ import ClassCard from './classCard';
 import Footer from './footer'
 
 export default function Home() {
+  // fetches and stores the courses to be displayed on screen
   const [courses, setCourses] = useState<[string, string, string][]>([]);
-  
   useEffect(() => {
     fetchCourses().then((data) => setCourses(data))
   }, []) 
@@ -26,8 +26,8 @@ export default function Home() {
   );
 }
 
+// fetch to retrive courses to display on the home page
 const CourseData_URL = "http://localhost:3231/getCourseData";
-
 async function fetchCourses(): Promise<[string, string, string][]> {
   const r = await fetch(CourseData_URL);
   const json = await r.json();
