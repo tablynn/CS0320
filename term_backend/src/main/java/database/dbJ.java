@@ -19,16 +19,11 @@ public class dbJ {
 
     PreparedStatement prep;
 
-    //prep = conn.prepareStatement("DROP TABLE enrollments");
-    //prep.executeUpdate();
-    //prep = conn.prepareStatement("DROP TABLE classes");
-    //prep.executeUpdate();
-    //prep = conn.prepareStatement("DROP TABLE students");
-    //prep.executeUpdate();
     prep = conn.prepareStatement("CREATE TABLE IF NOT EXISTS classes("
         + "class_id INTEGER,"
         + "title TEXT,"
         + "instructorName TEXT,"
+        + "instructorEmail TEXT,"
         + "description TEXT,"
         + "PRIMARY KEY (class_id))");
     //+ "FOREIGN KEY (instructorName) REFERENCES instructor(instr_id)"
@@ -39,29 +34,33 @@ public class dbJ {
 
 
     prep = conn.prepareStatement(
-        "INSERT INTO classes VALUES (?, ?, ?,?);");
+        "INSERT INTO classes VALUES (?, ?, ?,?,?);");
     prep.setInt(1, 1);
     prep.setString(2, "CSCI 0320: Introduction to Software Engineering");
     prep.setString(3, "Tim Nelson");
-    prep.setString(4,"Focuses on designing, building, testing, and maintaining systems collaboratively.");
+    prep.setString(4, "tn@cs.brown.edu");
+    prep.setString(5,"Focuses on designing, building, testing, and maintaining systems collaboratively.");
     prep.addBatch();
 
     prep.setInt(1, 2);
     prep.setString(2, "CSCI 0330: Fundamentals of Computer Systems");
-    prep.setString(3, "Matte Schwarzkpof");
-    prep.setString(4,"Covers fundamental concepts, principles, and abstractions that underlie the design and engineering of computer systems.");
+    prep.setString(3, "Malte Schwarzkopf");
+    prep.setString(4, "malte_schwarzkopf@brown.edu");
+    prep.setString(5,"Covers fundamental concepts, principles, and abstractions that underlie the design and engineering of computer systems.");
     prep.addBatch();
 
     prep.setInt(1, 3);
     prep.setString(2, "CSCI 0190: Accelerated Introduction to CS");
     prep.setString(3, "Tim Nelson");
-    prep.setString(4,"A one-semester introduction to CS covering programming integrated with core data structures, algorithms, and analysis techniques.");
+    prep.setString(4, "tn@cs.brown.edu");
+    prep.setString(5,"A one-semester introduction to CS covering programming integrated with core data structures, algorithms, and analysis techniques.");
     prep.addBatch();
 
     prep.setInt(1, 4);
     prep.setString(2, "CSCI 1470: Deep Learning");
     prep.setString(3, "Ritambhara Singh");
-    prep.setString(4,"In this course, you will get an overview of the prominent techniques of deep learning and their applications.");
+    prep.setString(4, "ritambhara_singh@brown.edu");
+    prep.setString(5,"In this course, you will get an overview of the prominent techniques of deep learning and their applications.");
     prep.addBatch();
 
     prep.executeBatch();
