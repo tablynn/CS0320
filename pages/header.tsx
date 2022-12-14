@@ -40,7 +40,7 @@ export default function Header(props: HeaderProps) {
         <IconButton>
           <SearchIcon />
         </IconButton>
-        <GoogleOAuth/>
+        <GoogleOAuth />
         </div>
        
       </Toolbar>
