@@ -9,6 +9,11 @@ import spark.Spark;
  */
 public class Server {
 
+  /**
+   * Main method starts Spark and runs the various handlers for each endpoint.
+   *
+   * @param args
+   */
   public static void main(String[] args) {
     Spark.port(3231);
 

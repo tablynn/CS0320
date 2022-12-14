@@ -16,18 +16,25 @@ import java.sql.Connection;
 // Query Parameters: student name, student email, class_id
 // http://localhost:3231/addStudent?studentName=Christine%20Wu&email=christine_wu@brown.edu&className=CSCI%201470:%20Deep%20Learning
 
-
 /**
  * This class adds a student and retreieves an updated waitlist
  * It is run when a fetch to the API server is made with the endpoint addStudent given parameters
  * studentName email and className
  */
 public class AddStudentHandler implements Route{
+  /**
+   * Handle method checks query parameters and calls helper method handleTables to
+   * generate the API server response.
+   *
+   * @param request
+   * @param response
+   * @return - list of list of strings containing course information
+   */
   @Override
   public Object handle(Request request, Response response) {
     QueryParamsMap qm = request.queryMap();
 
-    // If the query parameters are valid, assign parameters to String values and run helper handleTables
+    // If query parameters are valid run helper handleTables
     if (qm.hasKey("studentName") && qm.hasKey("email") && qm.hasKey("className")){
       String studentName = qm.value("studentName");
       String studentEmail = qm.value("email");
@@ -39,25 +46,31 @@ public class AddStudentHandler implements Route{
     }
   }
 
+  /**
+   * Helper method that connects to the database, checks if the student already exists
+   * in the students table (adds them accordingly), checks if they already exist
+   * with the class they want to join in the enrollments table (adds them accordingly)
+   * and returns an updated waitlist for that course.
+   *
+   * @param className - name of class
+   * @param studentEmail - email of student
+   * @param studentName - name of student
+   * @return studentWaitlist - updated waitlist for the course
+   */
   public List<String> handleTables(String studentName, String studentEmail, String className){
     List<String> studentWaitlist = new ArrayList<String>();
-    //Establish connection to the database
     try {
+      // Load the driver and establish a connection to the database
       Class.forName("org.sqlite.JDBC");
       String urlToDB = "jdbc:sqlite:" + "waitlist.sqlite3";
       Connection conn = DriverManager.getConnection(urlToDB);
       Statement stat = conn.createStatement();
-      //Tell the database to enforce foreign keys
+      // Tell the database to enforce foreign keys
       stat.executeUpdate("PRAGMA foreign_keys=ON;");
       PreparedStatement prep;
       ResultSet rs;
 
-      //There are two considerations in updating the tables upon a student joining a waitlist:
-      // The first is if the student already exists in the students table, and the second is whether
-      // they already exist in the enrollments table for the class they are trying to join
-      // This code avoids duplicates in the students table and prevents students from joining the
-      //same waitlist for a class multiple times.
-
+      // *NOTE* need to avoid duplicates in the students/enrollments tables
 
       // Check if student already exists in "students" table by querying students table with email param
       prep = conn.prepareStatement("select * from students WHERE email = ?");
@@ -99,14 +112,23 @@ public class AddStudentHandler implements Route{
       studentWaitlist = this.createReturnedWaitlist(prep, conn, rs, classID);
 
     } catch (SQLException e){
-      System.out.println("caught this exception: " + e);
+      System.out.println("caught this exception in AddStudentHandler: " + e);
     } catch (ClassNotFoundException f){
-      System.out.println("caught this exception: " + f);
+      System.out.println("caught this exception in AddStudentHandler: " + f);
     }
     return studentWaitlist;
   }
 
-  //helper method that queries and returns class ID based on a className
+  /**
+   * Helper method that gets the class_ID from the 'classes' table using className.
+   *
+   * @param prep - PreparedStatement
+   * @param conn - Connection
+   * @param rs - ResultSet
+   * @param className - name of the class
+   * @return classID - classID of className
+   * @throws SQLException
+   */
   private Integer getClassID(PreparedStatement prep, Connection conn, ResultSet rs, String className)
       throws SQLException {
     prep = conn.prepareStatement("select * from classes WHERE title = ?");
@@ -120,8 +142,18 @@ public class AddStudentHandler implements Route{
     return classID;
   }
 
-  //helper method that queries the enrollments table and checks whether the unique student id
-  // and classes id pair in a row exists
+  /**
+   * Helper method that checks whether the unique student_id and class_id pair in the
+   * 'enrollments' table exist in a row.
+   *
+   * @param prep - PreparedStatement
+   * @param conn - Connection
+   * @param rs - Result SEt
+   * @param studentID - id of student
+   * @param classID - id of class
+   * @return studentExistsInEnrollmentsWithCorrectClass - boolean value
+   * @throws SQLException
+   */
   private Boolean checkIfStudentExistsInEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, Integer classID)
       throws SQLException {
     prep = conn.prepareStatement("select * from enrollments WHERE student_id = ?");
@@ -138,7 +170,18 @@ public class AddStudentHandler implements Route{
     return studentExistsInEnrollmentsWithCorrectClass;
   }
 
-  //helper method that adds new row to students table based on Strings from request parameters
+  /**
+   * Helper method that adds a new row to the students table based on the query
+   * parameter strings.
+   *
+   * @param prep - PreparedStatement
+   * @param conn - Connection
+   * @param rs - ResultSet
+   * @param studentName - name of student
+   * @param studentEmail - email of student
+   * @return studentID - id of student
+   * @throws SQLException
+   */
   private Integer addToStudents(PreparedStatement prep, Connection conn, ResultSet rs, String studentName, String studentEmail)
       throws SQLException {
     Integer studentID = 0;
@@ -162,7 +205,17 @@ public class AddStudentHandler implements Route{
     return studentID;
   }
 
-  //helper method that adds new row to enrollments table based on new or retrieved student ID and class ID
+  /**
+   * Helper method that adds a new row to the 'enrollments' table based on the new or retrieved
+   * studentID and classID.
+   *
+   * @param prep - PreparedStatement
+   * @param conn - Connection
+   * @param rs - ResultSet
+   * @param studentID - id of student
+   * @param classID - id of class
+   * @throws SQLException
+   */
   private void addToEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, Integer classID)
       throws SQLException {
     Integer enrollID = 0;
@@ -187,10 +240,18 @@ public class AddStudentHandler implements Route{
     System.out.println("studentID " + studentID + " and classID " + classID + " were added to 'enrollments' at enrollID " + enrollID);
   }
 
-  //Generates nested list of Strings that represents waitlist of students for a given course
-  // Enrollments table is queried for matching class ID of course and each matching row is added
-  //to inner List representing a student. Then each List is added to an outer List representing the
-  //waitlist. The nested List is returned.
+  /**
+   * Helper method that generates a list of list of strings that represent the waitlist of students
+   * for a given course. Uses the 'enrollments' table to create a list of studentIDs and then uses
+   * the 'students' table to turn that into a list of student names.
+   *
+   * @param prep - PreparedStatement
+   * @param conn - Conenction
+   * @param rs - ResultSet
+   * @param classID - classID
+   * @return studentWaitlist - list of list of strings with students on waitlist.
+   * @throws SQLException
+   */
   private List<String> createReturnedWaitlist(PreparedStatement prep, Connection conn, ResultSet rs, Integer classID)
       throws SQLException {
     List<String> studentWaitlist = new ArrayList<String>();

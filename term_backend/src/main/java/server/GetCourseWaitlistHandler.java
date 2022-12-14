@@ -18,16 +18,23 @@ import spark.Route;
 
 /**
  * This class retrieves the waitlist data for a single class and is run when a fetch to the API
- * server is made with the endpoint getCourseWaitlist given request parameter className
+ * server is made with the endpoint getCourseWaitlist given request parameter className.
  */
 public class GetCourseWaitlistHandler implements Route {
 
+  /**
+   * Handle method checks query parameters and calls helper method handleTables to
+   * generate the API server response.
+   *
+   * @param request
+   * @param response
+   * @return - list of list of strings containing course information
+   */
   @Override
   public Object handle(Request request, Response response) {
-    List<List<String>> courseInformation = new ArrayList<List<String>>();
     QueryParamsMap qm = request.queryMap();
 
-    // If the query parameter is valid, assign parameter to String values and run helper handleTables
+    // If query parameter is valid run helper handleTables
     if (qm.hasKey("className")){
       String className = qm.value("className");
       return handleTables(className);
@@ -36,16 +43,24 @@ public class GetCourseWaitlistHandler implements Route {
     }
   }
 
+  /**
+   * Helper method that gets the classID, uses the classID to get all students on
+   * that course's waitlist from the 'enrollments' table, and generates a list of
+   * strings containing the names of the students on that course's waitlist.
+   *
+   * @param className - name of class
+   * @return
+   */
   public Object handleTables(String className){
     List<List<String>> courseInformation = new ArrayList<List<String>>();
 
     try {
-      //Establish connection to database
+      // Load the driver and establish a connection to the database
       Class.forName("org.sqlite.JDBC");
       String urlToDB = "jdbc:sqlite:" + "waitlist.sqlite3";
       Connection conn = DriverManager.getConnection(urlToDB);
       Statement stat = conn.createStatement();
-      //Tell the database to enforce foreign keys
+      // Tell the database to enforce foreign keys
       stat.executeUpdate("PRAGMA foreign_keys=ON;");
       PreparedStatement prep = null;
       ResultSet rs = null;
@@ -54,29 +69,26 @@ public class GetCourseWaitlistHandler implements Route {
       Integer classID = this.getClassID(prep, conn, rs, className);
       System.out.println("the class " + className + " has classID " + classID);
 
-      // use classID to get all the students on that waitlist by
-      // querying enrollments table based on class ID corresponding to request parameter className
+      // Use classID to create list of studentIDs on that course's waitlist
       List<String> studentIDList = new ArrayList<String>();
 
       prep = conn.prepareStatement("select * from enrollments WHERE class_id = ?");
       prep.setInt(1, classID);
       rs = prep.executeQuery();
 
-      // create list of student IDs matching class ID queried on
+      // Create list of student IDs matching class ID queried on
       while(rs.next()){
         studentIDList.add(rs.getString(2));
       }
       System.out.println("created a list of relevant student IDs: " + studentIDList);
 
-      // use student ID list to get all student names/emails from students table query
+      // Use student ID list to get all student names/emails from students table query
       prep = conn.prepareStatement("select * from students WHERE student_id = ?");
       for (int i = 0; i < studentIDList.size(); i++){
         prep.setString(1, studentIDList.get(i));
         rs = prep.executeQuery();
 
-        //While there is still a next row, write each of the values of each attribute in the row to
-        //a String, and add each String to an inner list. Then, add the list corresponding to the
-        //data for a single student to an outer list representing the waitlist of students
+        // For each relevant row, generate innerList and add to courseInformation
         while(rs.next()){
           List<String> innerList = new ArrayList<String>();
           String studentName = rs.getString(2);
@@ -88,9 +100,9 @@ public class GetCourseWaitlistHandler implements Route {
       }
 
     } catch (SQLException e){
-      System.out.println("caught this exception: " + e);
+      System.out.println("caught this exception in GetCourseWaitlistHandler: " + e);
     } catch (ClassNotFoundException f){
-      System.out.println("caught this exception: " + f);
+      System.out.println("caught this exception in GetCourseWaitlistHandler: " + f);
     }
 
     System.out.println("created list of student names to be returned: " + courseInformation);
@@ -100,7 +112,16 @@ public class GetCourseWaitlistHandler implements Route {
     return moshi.adapter(List.class).toJson(courseInformation);
   }
 
-  //helper method that queries classes table and returns class ID based on a className
+  /**
+   * Helper method that gets the class_ID from the 'classes' table using className.
+   *
+   * @param prep - PreparedStatement
+   * @param conn - Connection
+   * @param rs - ResultSet
+   * @param className - name of the class
+   * @return classID - classID of className
+   * @throws SQLException
+   */
   private Integer getClassID(PreparedStatement prep, Connection conn, ResultSet rs, String className)
       throws SQLException {
     prep = conn.prepareStatement("select * from classes WHERE title = ?");

@@ -6,7 +6,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
 
+/**
+ * This class creates and initially populates the SQL database.
+ */
 public class dbJ {
+
+  /**
+   * Main method that connects to the SQL database, creates the three tables,
+   * and initially populates them.
+   *
+   * @param args
+   * @throws SQLException
+   * @throws ClassNotFoundException
+   */
   public static void main(String[] args) throws SQLException, ClassNotFoundException {
     // These lines load the driver class and establish a connection to the database
     Class.forName("org.sqlite.JDBC");

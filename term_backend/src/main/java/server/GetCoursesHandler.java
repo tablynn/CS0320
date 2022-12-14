@@ -16,51 +16,59 @@ import java.sql.Connection;
 // http://localhost:3231/getCourseData
 
 /**
- * This class retrieves the course data for the web application and is run when a fetch to the API
- * server is made with the endpoint getCourseData
+ * This class retrieves all the course data for the web application from the SQL database
+ * and is run when a fetch to the API server is made with the endpoint getCourseData.
  */
 public class GetCoursesHandler implements Route{
 
+  /**
+   * Handle method that generates and returns a response to the API server. The response is
+   * in the form of a list of list of strings, where the inner list is all the information
+   * related to one course.
+   *
+   * @param request
+   * @param response
+   * @return courseInformation - list of list of strings containing all course data
+   */
   @Override
   public Object handle(Request request, Response response) {
     List<List<String>> courseInformation = new ArrayList<List<String>>();
 
     try {
-      //Load the driver and establish a connection to the database
+      // Load the driver and establish a connection to the database
       Class.forName("org.sqlite.JDBC");
       String urlToDB = "jdbc:sqlite:" + "waitlist.sqlite3";
       Connection conn = DriverManager.getConnection(urlToDB);
       Statement stat = conn.createStatement();
-      //Tell the database to enforce foreign keys
+      // Tell the database to enforce foreign keys
       stat.executeUpdate("PRAGMA foreign_keys=ON;");
       PreparedStatement prep;
       ResultSet rs;
 
-      //Set rs to the result of querying for all rows in the classes table
+      // Set rs to the result of querying for all rows in the classes table
       prep = conn.prepareStatement("select * from classes");
       rs = prep.executeQuery();
+      System.out.println("executing get course data");
 
-      //While there is still a next row, write each of the values of each attribute in the row to
-      //a String, and add each String to an inner list. Then, add the list corresponding to the
-      //data for a single class to an outer list of classes
+      // For each relevant row, generate innerList and add innerList to courseInformation
       while(rs.next()){
-        List<String> tempList = new ArrayList<String>();
+        List<String> innerList = new ArrayList<String>();
         String title = rs.getString(2);
         String instructor = rs.getString(3);
         String instructorEmail = rs.getString(4);
         String description = rs.getString(5);
-        tempList.add(title);
-        tempList.add(instructor);
-        tempList.add(description);
-        tempList.add(instructorEmail);
-        courseInformation.add(tempList);
+        innerList.add(title);
+        innerList.add(instructor);
+        innerList.add(description);
+        innerList.add(instructorEmail);
+        courseInformation.add(innerList);
         System.out.println("info: " + title + " " + instructor + " " + description + " " + instructorEmail);
       }
 
     } catch (SQLException e){
-      System.out.println("caught this exception: " + e);
+      System.out.println("caught this exception in GetCoursesHandler: " + e);
     } catch (ClassNotFoundException f){
-      System.out.println("caught this exception: " + f);
+      System.out.println("caught this exception in GetCoursesHandler: " + f);
     }
 
     // Serializes responses into JSON format
