@@ -7,11 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -24,6 +22,8 @@ import spark.Route;
 // Iterate through each student_id in list and update hashmap accordingly
 // Get second highest key/value pair from hashmap
 // Get and return course information for that course
+
+// http://localhost:3231/recommendCourse?className=CSCI%200320:%20Introduction%20to%20Software%20Engineering
 
 public class RecommendHandler implements Route{
   @Override
@@ -60,49 +60,24 @@ public class RecommendHandler implements Route{
       List<Integer> studentIDList = this.createStudentIDList(prep, conn, rs, classID);
       System.out.println("created a list of relevant student IDs: " + studentIDList);
 
-      // Create hashmap mapping course name to number of times it appears
+      // Create & populate hashmap mapping course name to number of times it appears
       HashMap<Integer, Integer> courseValues = new HashMap<Integer, Integer>();
+      this.populateHashmap(prep, conn, rs, studentIDList, courseValues);
 
-      // for each student_id in studentIDList
-      for (int i = 0; i < studentIDList.size(); i ++){
-        // get all courses corresponding to that student ID and add/update map
-        prep = conn.prepareStatement("select * from enrollments WHERE student_id = ?");
-        prep.setInt(1, studentIDList.get(i));
-        rs = prep.executeQuery();
-
-        // for each class the current student is on the waitlist for ...
-        while(rs.next()){
-          Integer currClassID = rs.getInt(3);
-          // if course already in hashmap then update the count
-          if (courseValues.containsKey(currClassID)){
-            Integer newValue = courseValues.get(currClassID) + 1;
-            courseValues.replace(currClassID, newValue);
-          // else, if course not in hashmap then put it in
-          } else {
-            courseValues.put(currClassID, 1);
-          }
-        }
-      }
-
-      // The key/value pair with the maximum value will be couresName so remove it
+      // The key/value pair with the maximum value will be classID so remove it
       if(courseValues.containsKey(classID)){
         courseValues.remove(classID);
       }
 
-      // if there are no other possible courses to recommend
+      // If there are no other possible courses to recommend
       if(courseValues.keySet().isEmpty()){
         List<String> informativeMessage = new ArrayList<String>();
         courseInformation.add("No recommendation could be provided because either no other students are on the waitlist for this course or the other students are solely on the waitlist for this course");
       } else {
-        // Find highest key/value pair in hashmap
-        Map.Entry<Integer, Integer> max = null;
-        for (Map.Entry<Integer, Integer> entry : courseValues.entrySet()) {
-          if (max == null || entry.getValue().compareTo(max.getValue()) > 0) {
-            max = entry;
-          }
-        }
-        // max2 is the class_ID with the highest number of occurences in other student waitlists
-        courseInformation = this.getCourseInfo(prep, conn, rs, max.getValue());
+        // Find the classID that the most students are *also* enrolled in (recommendedClassID)
+        Integer recommendedClassID = this.getHighestValCourse(courseValues);
+
+        courseInformation = this.getCourseInfo(prep, conn, rs, recommendedClassID);
         System.out.println(courseInformation);
       }
 
@@ -142,6 +117,40 @@ public class RecommendHandler implements Route{
     return studentIDList;
   }
 
+  private void populateHashmap(PreparedStatement prep, Connection conn, ResultSet rs, List<Integer> studentIDList, HashMap<Integer, Integer> courseValues)
+      throws SQLException {
+    // for each student_id in studentIDList
+    for (int i = 0; i < studentIDList.size(); i ++){
+      // get all courses corresponding to that student ID and add/update map
+      prep = conn.prepareStatement("select * from enrollments WHERE student_id = ?");
+      prep.setInt(1, studentIDList.get(i));
+      rs = prep.executeQuery();
+
+      // for each class the current student is also on the waitlist for ...
+      while(rs.next()){
+        Integer currClassID = rs.getInt(3);
+        // if course already in hashmap then update the count
+        if (courseValues.containsKey(currClassID)){
+          Integer newValue = courseValues.get(currClassID) + 1;
+          courseValues.replace(currClassID, newValue);
+          // else, if course not in hashmap then put it in
+        } else {
+          courseValues.put(currClassID, 1);
+        }
+      }
+    }
+  }
+
+  private Integer getHighestValCourse(HashMap<Integer, Integer> courseValues){
+    Map.Entry<Integer, Integer> max = null;
+    for (Map.Entry<Integer, Integer> entry : courseValues.entrySet()) {
+      if (max == null || entry.getValue().compareTo(max.getValue()) > 0) {
+        max = entry;
+      }
+    }
+    return max.getValue();
+  }
+
   private List<String> getCourseInfo(PreparedStatement prep, Connection conn, ResultSet rs, Integer classID)
       throws SQLException {
     List<String> courseInformation = new ArrayList<String>();
@@ -151,15 +160,10 @@ public class RecommendHandler implements Route{
     rs = prep.executeQuery();
 
     while(rs.next()){
-      String title = rs.getString(2);
-      String instructor = rs.getString(3);
-      String instructorEmail = rs.getString(4);
-      String description = rs.getString(5);
-
-      courseInformation.add(title);
-      courseInformation.add(instructor);
-      courseInformation.add(description);
-      courseInformation.add(instructorEmail);
+      courseInformation.add(rs.getString(2)); // add title
+      courseInformation.add(rs.getString(3)); // add instructor
+      courseInformation.add(rs.getString(5)); // add description
+      courseInformation.add(rs.getString(4)); // add instructorEmail
     }
     return courseInformation;
   }
