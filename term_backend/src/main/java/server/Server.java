@@ -27,6 +27,7 @@ public class Server {
     Spark.get("getCourseWaitlist", new GetCourseWaitlistHandler());
     Spark.get("addStudent", new AddStudentHandler());
     Spark.get("removeStudent", new RemoveStudentHandler());
+    Spark.get("recommendCourse", new RecommendHandler());
     Spark.init();
     Spark.awaitInitialization();
     System.out.println("Server started.");
