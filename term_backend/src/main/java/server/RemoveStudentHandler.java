@@ -16,13 +16,18 @@ import spark.Route;
 //Query Parameters: student name, class name
 // http://localhost:3231/removeStudent?studentName=Christine%20Wu&className=CSCI%201470:%20Deep%20Learning
 
+/**
+ * This class removes a student from a waitlist and retreieves an updated waitlist
+ * It is run when a fetch to the API server is made with the endpoint removeStudent given parameters
+ * studentName email and className
+ */
 public class RemoveStudentHandler implements Route {
 
   @Override
   public Object handle(Request request, Response response) {
     QueryParamsMap qm = request.queryMap();
 
-    // If the query parameters are valid ...
+    // If the query parameters are valid, assign parameters to String values and run helper handleTables
     if (qm.hasKey("studentName") && qm.hasKey("className")){
       String studentName = qm.value("studentName");
       String className = qm.value("className");
@@ -34,14 +39,18 @@ public class RemoveStudentHandler implements Route {
     }
   }
 
+  //This method checks if there is an enrollment matching the student and class criteria to remove
+  //and then subseuently deletes the row from the enrollments database
   public List<String> handleTables(String studentName, String className){
     List<String> studentWaitlist = new ArrayList<String>();
 
     try {
+      //Establish connection to database
       Class.forName("org.sqlite.JDBC");
       String urlToDB = "jdbc:sqlite:" + "waitlist.sqlite3";
       Connection conn = DriverManager.getConnection(urlToDB);
       Statement stat = conn.createStatement();
+      //Tell database to enforce foreign keys
       stat.executeUpdate("PRAGMA foreign_keys=ON;");
       PreparedStatement prep = null;
       ResultSet rs = null;
@@ -58,9 +67,12 @@ public class RemoveStudentHandler implements Route {
       prep = conn.prepareStatement("select * from enrollments WHERE student_id = ?");
       prep.setInt(1, studentID);
       rs = prep.executeQuery();
+      //boolean initially set to false
       Boolean studentExistsInEnrollmentsWithCorrectClass = false;
       Integer enrollID = 0;
 
+      //If there are any rows matching the executed query for student ID, class ID is checked
+      //boolean is then updated if class ID is a match
       while(rs.next()){
         Integer currClassID = rs.getInt(3);
         if(currClassID == classID){
@@ -87,6 +99,7 @@ public class RemoveStudentHandler implements Route {
     return studentWaitlist;
   }
 
+  //helper method returning class ID based on className
   private Integer getClassID(PreparedStatement prep, Connection conn, ResultSet rs, String className)
       throws SQLException {
     prep = conn.prepareStatement("select * from classes WHERE title = ?");
@@ -100,6 +113,7 @@ public class RemoveStudentHandler implements Route {
     return classID;
   }
 
+  //helper method returning student ID based on studentName
   private Integer getStudentID(PreparedStatement prep, Connection conn, ResultSet rs, String studentName)
       throws SQLException {
     prep = conn.prepareStatement("select * from students WHERE name = ?");
@@ -113,6 +127,7 @@ public class RemoveStudentHandler implements Route {
     return studentID;
   }
 
+  //helper method that deletes row from enrollments table based on unique enroll_id value
   private void removeStudent(PreparedStatement prep, Connection conn, ResultSet rs, Integer enrollID)
       throws SQLException {
 
@@ -122,6 +137,10 @@ public class RemoveStudentHandler implements Route {
     System.out.println("removing the enrollID: " + enrollID);
   }
 
+  //Generates nested list of Strings that represents waitlist of students for a given course
+  // Enrollments table is queried for matching class ID of course and each matching row is added
+  //to inner List representing a student. Then each List is added to an outer List representing the
+  //waitlist. The nested List is returned.
   private List<String> createReturnedWaitlist(PreparedStatement prep, Connection conn, ResultSet rs, Integer classID)
       throws SQLException {
     List<String> studentWaitlist = new ArrayList<String>();
