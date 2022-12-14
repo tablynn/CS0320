@@ -5,7 +5,6 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import Image from 'next/image'
 import GoogleOAuth from './GoogleOAuth';
 import { useSession} from "next-auth/react"
 
@@ -15,15 +14,17 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   const { title } = props;
-  const { data: session } = useSession()
 
 
   return (
     <React.Fragment>
       <Toolbar id = "toolbar" sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Link href='/'>
+       <div id="left-side-header">
+       <Link href='/'>
           <Button size="small">Home</Button>
         </Link>
+       </div>
+       
         <Typography
           component="h2"
           variant="h5"
@@ -35,17 +36,16 @@ export default function Header(props: HeaderProps) {
         >
           {title}
         </Typography>
+        <div id = "right-side-header">
         <IconButton>
           <SearchIcon />
         </IconButton>
-        {/* <Image
-      src={session?.user.image}
-      alt="Image"
-      width={10}
-      height={10}
-    /> */}
         <GoogleOAuth/>
+        </div>
+       
       </Toolbar>
+
+      
     </React.Fragment>
   );
 }
