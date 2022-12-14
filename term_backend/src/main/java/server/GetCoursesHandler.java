@@ -37,12 +37,14 @@ public class GetCoursesHandler implements Route{
         List<String> tempList = new ArrayList<String>();
         String title = rs.getString(2);
         String instructor = rs.getString(3);
-        String description = rs.getString(4);
+        String instructorEmail = rs.getString(4);
+        String description = rs.getString(5);
         tempList.add(title);
         tempList.add(instructor);
         tempList.add(description);
+        tempList.add(instructorEmail);
         courseInformation.add(tempList);
-        System.out.println("info: " + title + " " + instructor + " " + description);
+        System.out.println("info: " + title + " " + instructor + " " + description + " " + instructorEmail);
       }
 
     } catch (SQLException e){
