@@ -46,8 +46,8 @@ public class AddStudentHandler implements Route{
       ResultSet rs;
 
       // Check if student already exists in "students" table
-      prep = conn.prepareStatement("select * from students WHERE name = ?");
-      prep.setString(1, studentName);
+      prep = conn.prepareStatement("select * from students WHERE email = ?");
+      prep.setString(1, studentEmail);
       rs = prep.executeQuery();
       Boolean studentExistsInStudents = false;
       Integer studentID = 0;
