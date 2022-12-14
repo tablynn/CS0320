@@ -89,19 +89,22 @@ public class RecommendHandler implements Route{
         courseValues.remove(classID);
       }
 
-      // Find highest key/value pair in hashmap
-      Map.Entry<Integer, Integer> max = null;
-      for (Map.Entry<Integer, Integer> entry : courseValues.entrySet()) {
-        if (max == null || entry.getValue().compareTo(max.getValue()) > 0) {
-          max = entry;
+      // if there are no other possible courses to recommend
+      if(courseValues.keySet().isEmpty()){
+        List<String> informativeMessage = new ArrayList<String>();
+        courseInformation.add("No recommendation could be provided because either no other students are on the waitlist for this course or the other students are solely on the waitlist for this course");
+      } else {
+        // Find highest key/value pair in hashmap
+        Map.Entry<Integer, Integer> max = null;
+        for (Map.Entry<Integer, Integer> entry : courseValues.entrySet()) {
+          if (max == null || entry.getValue().compareTo(max.getValue()) > 0) {
+            max = entry;
+          }
         }
+        // max2 is the class_ID with the highest number of occurences in other student waitlists
+        courseInformation = this.getCourseInfo(prep, conn, rs, max.getValue());
+        System.out.println(courseInformation);
       }
-
-      System.out.println("max1: " + max);
-
-      // max2 is the class_ID with the highest number of occurences in other student waitlists
-      courseInformation = this.getCourseInfo(prep, conn, rs, max.getValue());
-      System.out.println(courseInformation);
 
     } catch (SQLException e){
       System.out.println("caught this exception: " + e);
