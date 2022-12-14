@@ -1,3 +1,4 @@
+import { Button } from "@mui/material"
 import { useSession, signIn, signOut } from "next-auth/react"
 
 export default function GoogleOAuth() {
@@ -6,8 +7,8 @@ export default function GoogleOAuth() {
     return (
       <>
         {/* Signed in as {session?.user?.email} <br /> */}
-        <img src={session?.user?.image} id ="profile-image"></img>
-        <button id = "logout" onClick={() => signOut()}>Sign out</button>
+        {/* <img src={session?.user?.image} alt=""/> */}
+        <Button variant="outlined" onClick={() => signOut()}>SIGN OUT</Button>
         
       </>
     )
@@ -15,8 +16,9 @@ export default function GoogleOAuth() {
   return (
     <>
       {/* Not signed in <br /> */}
-      <img src={session?.user?.image} id ="profile-image"></img>
-      <button id = "login" onClick={() => signIn()}>Sign in</button>
+      {/* <img src={session?.user?.image} id ="profile-image"></img> */}
+      {/* <img src={session?.user?.image} alt="image"/> */}
+      <Button variant="outlined"  onClick={() => signIn()}>SIGN IN</Button>
     </>
   )
 }
