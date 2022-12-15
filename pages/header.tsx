@@ -6,7 +6,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import GoogleOAuth from './GoogleOAuth';
-import { useSession} from "next-auth/react"
 
 interface HeaderProps {
     title: string;

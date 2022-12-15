@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react';
 import { Button, Typography, Box, Grid, Stack } from "@mui/material";
 import WaitlistQueueItem from "./WaitlistQueueItem";
+import { fetchWaitlist } from "../pages/api/fetchWaitlist"
+import { addToWaitlist } from "../pages/api/addStudent"
  
 interface WaitlistProps {
    courseName: string;
@@ -10,31 +12,14 @@ interface WaitlistProps {
 export default function WaitlistQueue({ courseName }: WaitlistProps) {
     // access current user session
     const { data: session } = useSession();
+    const userName: string = session?.user?.name;
+    const userEmail: string = session?.user?.email;
 
     // fetches and stores the current waitlist in order to display on page
     const [waitlist, setWaitlist] = useState<[string, string][]>([]);
     useEffect(() => {
-        fetchWaitlist().then((data) => setWaitlist(data))
-    }, []) 
-
-    // fetch for retrieving the course waitlist for the current course
-    const CourseWaitlist_URL = "http://localhost:3231/getCourseWaitlist?className=" + courseName;
-    async function fetchWaitlist(): Promise<[string, string][]> {
-        const r = await fetch(CourseWaitlist_URL);
-        const json = await r.json();
-        return await (json as Promise<[string, string][]>);
-    }
- 
-    // fetch for informing the backend that a new student is attempting to join
-    const WaitlistUpdate_URL = "http://localhost:3231/addStudent?";
-    const studentName = "studentName=" + session?.user?.name;
-    const studentEmail = "email=" + session?.user?.email;
-    const className = "className=" + courseName;
-    async function addToWaitlist(): Promise<[string, string][]> {
-        const r = await fetch(WaitlistUpdate_URL + studentName + "&" + studentEmail + "&" + className);
-        const json = await r.json();
-        return await (json as Promise<[string, string][]>);
-    }
+        fetchWaitlist(courseName).then((data) => setWaitlist(data))
+    }, [setWaitlist]) 
     
     return (
         <Grid item xs={12} md={9}>
@@ -43,8 +28,8 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
                    Queue
                 </Typography>
                 <Button variant="contained" onClick={() => {
-                    addToWaitlist()
-                    fetchWaitlist().then((data) => setWaitlist(data));
+                    addToWaitlist(userName, userEmail, courseName)
+                    fetchWaitlist(courseName).then((data) => setWaitlist(data));
                 }}>
                        Join Queue
                </Button>
@@ -52,7 +37,8 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
            <Box mt={1}>
                <Stack spacing={1}>
                    {waitlist.map((student, index) => (
-                       <WaitlistQueueItem key={student.at(0)} name={student.at(0)} email={student.at(1)} position={index + 1}/>
+                       <WaitlistQueueItem key={student.at(0)} name={student.at(0)} email={student.at(1)} 
+                       courseName={courseName} position={index + 1} setWaitlist={setWaitlist}/>
                    ))}
                </Stack>
            </Box>
