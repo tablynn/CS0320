@@ -78,7 +78,7 @@ a {
 #toolbar {
   /* text-align: center; */
   /* background-color: blueviolet; */
-  height: 125px;
+  height: 100px;
 }
 
 
@@ -107,3 +107,6 @@ a {
   text-align: right;
 }
 
+#waitlist-queue {
+  padding: 10px 2rem;
+}
