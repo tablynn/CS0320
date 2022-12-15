@@ -1,5 +1,6 @@
 package server;
 
+import com.squareup.moshi.Moshi;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,7 +59,7 @@ public class RecommendHandler implements Route{
    * @param className - name of class
    * @return courseInformation - information for recommended class
    */
-  public List<String> handleTables(String className){
+  public String handleTables(String className){
     List<String> courseInformation = new ArrayList<String>();
 
     try {
@@ -106,7 +107,9 @@ public class RecommendHandler implements Route{
       System.out.println("caught this exception in RecommendHandler: " + f);
     }
 
-    return courseInformation;
+    // Serializes responses into JSON format
+    Moshi moshi = new Moshi.Builder().build();
+    return moshi.adapter(List.class).toJson(courseInformation);
   }
 
   /**
