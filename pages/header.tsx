@@ -1,50 +1,85 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import GoogleOAuth from './GoogleOAuth';
+import { Box, Modal } from '@mui/material';
+import { recommendCourse } from "./api/recommend";
 
 interface HeaderProps {
-    title: string;
+  title: string;
 }
 
 export default function Header(props: HeaderProps) {
   const { title } = props;
 
+  // state for Modal recommendation display
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  // fetches and stores the course recommendation to be displayed on screen
+  const [recommendation, setRecommendation] = useState<string[]>([]);
+  useEffect(() => {
+    recommendCourse("CSCI 0330: Fundamentals of Computer Systems").then((data) => setRecommendation(data))
+  }, [])
 
   return (
     <React.Fragment>
-      <Toolbar id = "toolbar" sx={{ borderBottom: 1, borderColor: 'divider' }}>
-       <div id="left-side-header">
-       <Link href='/'>
-          <Button size="small">Home</Button>
-        </Link>
-       </div>
-       
+      <Toolbar id="toolbar" sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <div id="left-side-header">
+          <Link href='/'>
+            <Button size="small">Home</Button>
+          </Link>
+        </div>
         <Typography
           component="h2"
           variant="h5"
           color="inherit"
           align="center"
-          id = "header"
+          id="header"
           noWrap
           sx={{ flex: 1 }}
         >
           {title}
         </Typography>
-        <div id = "right-side-header">
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
-        <GoogleOAuth />
+        <div id="right-side-header">
+          <IconButton onClick={handleOpen}>
+            <TipsAndUpdatesIcon />
+          </IconButton>
+          <GoogleOAuth />
         </div>
-       
       </Toolbar>
-
-      
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Based on your current waitlists, we suggest you take a look at the following course.
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {recommendation.at(0)} taught by {recommendation.at(1)}
+          </Typography>
+        </Box>
+      </Modal>
     </React.Fragment>
   );
 }
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
