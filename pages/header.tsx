@@ -73,7 +73,7 @@ export default function Header(props: HeaderProps) {
             {coursePage ? explanation : instructions}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {coursePage && (recommendation.at(0) + " taught by " + recommendation.at(1))}
+            {coursePage && (recommendation.at(0) + " (" + recommendation.at(1) + ")")}
           </Typography>
         </Box>
       </Modal>
