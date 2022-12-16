@@ -8,6 +8,7 @@ import Link from 'next/link';
 import GoogleOAuth from './GoogleOAuth';
 import { Box, Modal } from '@mui/material';
 import { recommendCourse } from "./api/recommend";
+import { useRouter } from 'next/router';
 
 interface HeaderProps {
   title: string;
@@ -15,6 +16,9 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   const { title } = props;
+  const router = useRouter();
+  const { courseName } = router.query;
+  const coursePage: boolean = (courseName as string) !== undefined ? true : false;
 
   // state for Modal recommendation display
   const [open, setOpen] = useState(false);
@@ -24,8 +28,13 @@ export default function Header(props: HeaderProps) {
   // fetches and stores the course recommendation to be displayed on screen
   const [recommendation, setRecommendation] = useState<string[]>([]);
   useEffect(() => {
-    recommendCourse("CSCI 0330: Fundamentals of Computer Systems").then((data) => setRecommendation(data))
+    if (coursePage) {
+      recommendCourse(courseName as string).then((data) => setRecommendation(data))
+    }
   }, [])
+
+  const explanation: string = "Based on your current waitlists, we suggest you take a look at the following course"
+  const instructions: string = "Navigate to a course page and click this icon to receive a course recommendation!"
 
   return (
     <React.Fragment>
@@ -61,10 +70,10 @@ export default function Header(props: HeaderProps) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Based on your current waitlists, we suggest you take a look at the following course.
+            {coursePage ? explanation : instructions}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {recommendation.at(0)} taught by {recommendation.at(1)}
+            {coursePage && (recommendation.at(0) + " taught by " + recommendation.at(1))}
           </Typography>
         </Box>
       </Modal>
