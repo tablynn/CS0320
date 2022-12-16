@@ -15,7 +15,7 @@ interface HeaderProps {
 }
 
 const explanation: string = "Based on your current waitlists, we suggest you take a look at the following course"
-  const instructions: string = "Navigate to a course page and click the lightbulb icon to receive a course recommendation!"
+const instructions: string = "Navigate to a course page and click the lightbulb icon to receive a course recommendation!"
 
 export default function Header(props: HeaderProps) {
   const { title } = props;
@@ -73,7 +73,7 @@ export default function Header(props: HeaderProps) {
             {coursePage ? explanation : instructions}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {coursePage && (recommendation.at(0) + " (" + recommendation.at(1) + ")")}
+            {coursePage && (recommendation.at(0) + " taught by " + recommendation.at(1))}
           </Typography>
         </Box>
       </Modal>
