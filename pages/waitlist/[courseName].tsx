@@ -10,7 +10,7 @@ export default function CourseWaitlist() {
  const { courseName } = router.query;
  
  return (
-   <div>
+   <div id="waitlist-queue">
      <Header title='Computer Science Course Waitlists'/>
      <br></br>
      <WaitlistHeader courseName={courseName as string}/>

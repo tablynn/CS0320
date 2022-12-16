@@ -1,5 +1,6 @@
 package server;
 
+import com.squareup.moshi.Moshi;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -59,7 +60,7 @@ public class RecommendHandler implements Route{
    * @param dbName - name of sql file connection is established to
    * @return courseInformation - information for recommended class
    */
-  public List<String> handleTables(String className, String dbName){
+  public String handleTables(String className, String dbName){
     List<String> courseInformation = new ArrayList<String>();
 
     try {
@@ -90,6 +91,10 @@ public class RecommendHandler implements Route{
         courseValues.remove(classID);
       }
 
+      System.out.println("courseValues hashmap: " + courseValues);
+      System.out.println("courseValues keys: " + courseValues.keySet());
+      System.out.println("courseValues values: " + courseValues.values());
+
       // If there are no other possible courses to recommend, provide informative statement
       if(courseValues.keySet().isEmpty()){
         courseInformation.add("No recommendation could be provided because either no other students are on the waitlist for this course or the other students are solely on the waitlist for this course");
@@ -107,7 +112,9 @@ public class RecommendHandler implements Route{
       System.out.println("caught this exception in RecommendHandler: " + f);
     }
 
-    return courseInformation;
+    // Serializes responses into JSON format
+    Moshi moshi = new Moshi.Builder().build();
+    return moshi.adapter(List.class).toJson(courseInformation);
   }
 
   /**
@@ -209,7 +216,8 @@ public class RecommendHandler implements Route{
         max = entry;
       }
     }
-    return max.getValue();
+    System.out.println("the value being returned by getHighestValCourse is: " + max.getKey());
+    return max.getKey();
   }
 
 

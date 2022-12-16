@@ -10,18 +10,18 @@ export default function Home() {
   const [courses, setCourses] = useState<[string, string, string][]>([]);
   useEffect(() => {
     fetchCourses().then((data) => setCourses(data))
-  }, []) 
+  }, [])
 
   return (
     <div className={styles.container}>
-      <Header title='Computer Science Course Waitlists'/>
+      <Header title='Computer Science Course Waitlists' />
       <br></br>
       <Grid container spacing={4}>
         {courses.map((course) => (
-          <ClassCard key={course.at(0)} courseName={course.at(0)} professor={course.at(1)} description={course.at(2)}/>
+          <ClassCard key={course.at(0)} courseName={course.at(0)} professor={course.at(1)} description={course.at(2)} />
         ))}
       </Grid>
-      <Footer title='Created by Calvin Eng' description='with minimal help from Tabitha Lynn'/>
+      <Footer title='Created by Calvin Eng' description='with minimal help from Tabitha Lynn' />
     </div>
   );
 }
