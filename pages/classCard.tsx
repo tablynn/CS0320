@@ -6,7 +6,6 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
-import { classes } from '../mocks/sample_classes';
 
 interface Class {
   courseName: string;

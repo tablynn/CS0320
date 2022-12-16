@@ -1,7 +1,7 @@
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { fetchWaitlist } from "../pages/api/fetchWaitlist"
-import { removeFromWaitlist } from "../pages/api/removeStudent"
+import { fetchWaitlist } from "../../pages/api/fetchWaitlist"
+import { removeFromWaitlist } from "../../pages/api/removeStudent"
 
 interface StudentProps {
     name: string;

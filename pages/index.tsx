@@ -1,9 +1,9 @@
 import styles from '../styles/Home.module.css'
 import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid';
-import Header from './header'
+import Header from '../components/Header'
 import ClassCard from './classCard';
-import Footer from './footer'
+import Footer from '../components/Footer'
 
 export default function Home() {
   // fetches and stores the courses to be displayed on screen
