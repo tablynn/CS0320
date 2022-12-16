@@ -17,6 +17,12 @@ interface HeaderProps {
 const explanation: string = "Based on your current waitlists, we suggest you take a look at the following course"
 const instructions: string = "Navigate to a course page and click the lightbulb icon to receive a course recommendation!"
 
+/**
+ * Creates a header for the web application
+ * 
+ * @param props - title of the website
+ * @returns 
+ */
 export default function Header(props: HeaderProps) {
   const { title } = props;
   const router = useRouter();

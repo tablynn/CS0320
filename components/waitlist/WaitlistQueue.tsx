@@ -5,22 +5,18 @@ import WaitlistQueueItem from "./WaitlistQueueItem";
 import { fetchWaitlist } from "../../pages/api/fetchWaitlist"
 import { addToWaitlist } from "../../pages/api/addStudent"
 
+// Parameters for a queue
 interface WaitlistProps {
     courseName: string;
 }
 
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-
+/**
+ * Creates queue for the waitlists, which has a join queue button and displays those
+ * who are currently in the waitlist
+ * 
+ * @param courseName - name of the current pages course 
+ * @returns JSX.Element
+ */
 export default function WaitlistQueue({ courseName }: WaitlistProps) {
     // access current user session
     const { data: session } = useSession();

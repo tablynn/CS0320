@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { fetchWaitlist } from "../../pages/api/fetchWaitlist"
 import { removeFromWaitlist } from "../../pages/api/removeStudent"
 
+// Parameters for a queue item
 interface StudentProps {
     name: string;
     email: string;
@@ -11,6 +12,13 @@ interface StudentProps {
     setWaitlist: any;
 }
 
+/**
+ * Creates a card for someone in the waitlist given their informaiton, adding a remove
+ * button if the current user is one of the people on the waitlist
+ * 
+ * @params name, email, position, courseName, and setWaitlist function 
+ * @returns JSX.Element
+ */
 export default function WaitlistQueueItem({ name, email, position, courseName, setWaitlist }: StudentProps) {
     // access current user session
     const { data: session } = useSession();

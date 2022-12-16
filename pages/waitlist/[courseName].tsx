@@ -5,7 +5,12 @@ import WaitlistHeader from '../../components/waitlist/WaitlistHeader';
 import WaitlistQueue from '../../components/waitlist/WaitlistQueue';
 import { useRouter } from "next/router";
  
-export default function CourseWaitlist() {
+/**
+ * Page that uses dynamic routing to create unique page for each course 
+ * 
+ * @returns JSX.Element
+ */
+export default function CourseWaitlist(): JSX.Element {
  const router = useRouter();
  const { courseName } = router.query;
  

@@ -1,4 +1,10 @@
-// fetch for informing the backend that a new student is attempting to join
+/**
+ * Fetch for informing the backend that a new student is attempting to join
+ * 
+ * @param name - student's name
+ * @param email - student's email
+ * @param courseName - name of the current course page
+ */
 export async function addToWaitlist(name: string, email: string, courseName: string) {
     const WaitlistUpdate_URL = "http://localhost:3231/addStudent?";
     const studentName = "studentName=" + name;

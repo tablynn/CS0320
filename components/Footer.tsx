@@ -8,6 +8,12 @@ interface FooterProps {
   title: string;
 }
 
+/**
+ * Creates a footer for the web application
+ * 
+ * @param props - description and title of the footer
+ * @returns 
+ */
 export default function Footer(props: FooterProps) {
   const { description, title } = props;
 
