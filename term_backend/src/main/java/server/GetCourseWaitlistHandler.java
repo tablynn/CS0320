@@ -37,7 +37,7 @@ public class GetCourseWaitlistHandler implements Route {
     // If query parameter is valid run helper handleTables
     if (qm.hasKey("className")){
       String className = qm.value("className");
-      return handleTables(className);
+      return handleTables(className, "waitlist.sqlite3");
     } else {
       return "failure with the provided query parameters";
     }
@@ -51,13 +51,13 @@ public class GetCourseWaitlistHandler implements Route {
    * @param className - name of class
    * @return
    */
-  public Object handleTables(String className){
+  public Object handleTables(String className, String dbName){
     List<List<String>> courseInformation = new ArrayList<List<String>>();
 
     try {
       // Load the driver and establish a connection to the database
       Class.forName("org.sqlite.JDBC");
-      String urlToDB = "jdbc:sqlite:" + "waitlist.sqlite3";
+      String urlToDB = "jdbc:sqlite:" + dbName;
       Connection conn = DriverManager.getConnection(urlToDB);
       Statement stat = conn.createStatement();
       // Tell the database to enforce foreign keys

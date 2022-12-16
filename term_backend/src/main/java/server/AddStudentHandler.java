@@ -39,7 +39,7 @@ public class AddStudentHandler implements Route{
       String studentName = qm.value("studentName");
       String studentEmail = qm.value("email");
       String className = qm.value("className");
-      return handleTables(studentName, studentEmail, className);
+      return handleTables(studentName, studentEmail, className, "waitlist.sqlite3");
 
     } else {
       return "failure with the provided query parameters";
@@ -57,12 +57,12 @@ public class AddStudentHandler implements Route{
    * @param studentName - name of student
    * @return studentWaitlist - updated waitlist for the course
    */
-  public List<String> handleTables(String studentName, String studentEmail, String className){
+  public List<String> handleTables(String studentName, String studentEmail, String className, String dbName){
     List<String> studentWaitlist = new ArrayList<String>();
     try {
       // Load the driver and establish a connection to the database
       Class.forName("org.sqlite.JDBC");
-      String urlToDB = "jdbc:sqlite:" + "waitlist.sqlite3";
+      String urlToDB = "jdbc:sqlite:" + dbName;
       Connection conn = DriverManager.getConnection(urlToDB);
       Statement stat = conn.createStatement();
       // Tell the database to enforce foreign keys
