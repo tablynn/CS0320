@@ -35,7 +35,7 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
                 <Typography variant="h6" fontWeight={600}>
                     Queue
                 </Typography>
-                <Button variant="contained" onClick={() => {
+                <Button aria-label="Click to join queue" variant="contained" onClick={() => {
                     addToWaitlist(userName, userEmail, courseName);
                     fetchWaitlist(courseName).then((data) => setWaitlist(data));
                 }}>

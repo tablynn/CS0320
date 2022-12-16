@@ -31,7 +31,7 @@ export default function WaitlistQueueItem({ name, email, position, courseName, s
     }}> X </Button>
 
     return (
-        <Paper variant={"outlined"}>
+        <Paper aria-label="Student in the waitlist:" variant={"outlined"}>
             <Box px={2.5} py={2}>
                 <Stack direction="row" justifyContent="space-between" overflow={"hidden"}>
                     <Stack direction="row" spacing={[0, null, 2]} alignItems="center" overflow={"hidden"}>

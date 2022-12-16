@@ -2,7 +2,7 @@ import styles from '../styles/Home.module.css'
 import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid';
 import Header from '../components/Header'
-import ClassCard from './classCard';
+import ClassCard from '../components/ClassCard';
 import Footer from '../components/Footer'
 import fetchCourses from './api/getCourses';
 

@@ -62,10 +62,10 @@ export default function Header(props: HeaderProps) {
           {title}
         </Typography>
         <div id="right-side-header">
-          <IconButton onClick={handleOpen}>
-            <TipsAndUpdatesIcon />
+          <IconButton aria-label='Click to receive a recommendation' onClick={handleOpen}>
+            <TipsAndUpdatesIcon/>
           </IconButton>
-          <GoogleOAuth />
+          <GoogleOAuth/>
         </div>
       </Toolbar>
       <Modal
