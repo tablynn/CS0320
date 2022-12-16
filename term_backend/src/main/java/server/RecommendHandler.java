@@ -90,6 +90,10 @@ public class RecommendHandler implements Route{
         courseValues.remove(classID);
       }
 
+      System.out.println("courseValues hashmap: " + courseValues);
+      System.out.println("courseValues keys: " + courseValues.keySet());
+      System.out.println("courseValues values: " + courseValues.values());
+
       // If there are no other possible courses to recommend, provide informative statement
       if(courseValues.keySet().isEmpty()){
         courseInformation.add("No recommendation could be provided because either no other students are on the waitlist for this course or the other students are solely on the waitlist for this course");
@@ -211,7 +215,8 @@ public class RecommendHandler implements Route{
         max = entry;
       }
     }
-    return max.getValue();
+    System.out.println("the value being returned by getHighestValCourse is: " + max.getKey());
+    return max.getKey();
   }
 
 
