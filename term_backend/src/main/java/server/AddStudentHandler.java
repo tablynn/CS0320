@@ -55,6 +55,7 @@ public class AddStudentHandler implements Route{
    * @param className - name of class
    * @param studentEmail - email of student
    * @param studentName - name of student
+   * @param dbName - name of sql file connection is established to
    * @return studentWaitlist - updated waitlist for the course
    */
   public List<String> handleTables(String studentName, String studentEmail, String className, String dbName){

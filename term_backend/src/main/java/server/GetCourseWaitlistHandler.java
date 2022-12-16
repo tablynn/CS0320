@@ -49,6 +49,7 @@ public class GetCourseWaitlistHandler implements Route {
    * strings containing the names of the students on that course's waitlist.
    *
    * @param className - name of class
+   * @param dbName - name of sql file connection is established to
    * @return
    */
   public Object handleTables(String className, String dbName){
