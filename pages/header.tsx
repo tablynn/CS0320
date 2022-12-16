@@ -14,6 +14,9 @@ interface HeaderProps {
   title: string;
 }
 
+const explanation: string = "Based on your current waitlists, we suggest you take a look at the following course"
+  const instructions: string = "Navigate to a course page and click the lightbulb icon to receive a course recommendation!"
+
 export default function Header(props: HeaderProps) {
   const { title } = props;
   const router = useRouter();
@@ -32,9 +35,6 @@ export default function Header(props: HeaderProps) {
       recommendCourse(courseName as string).then((data) => setRecommendation(data))
     }
   }, [])
-
-  const explanation: string = "Based on your current waitlists, we suggest you take a look at the following course"
-  const instructions: string = "Navigate to a course page and click this icon to receive a course recommendation!"
 
   return (
     <React.Fragment>
