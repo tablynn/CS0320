@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import GoogleOAuth from '../pages/GoogleOAuth';
+import GoogleOAuth from './GoogleOAuth';
 import { Box, Modal } from '@mui/material';
 import { recommendCourse } from "../pages/api/recommend";
 import { useRouter } from 'next/router';
