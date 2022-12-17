@@ -16,12 +16,7 @@ interface Class {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // maxWidth: 345,
-    // margin: theme.spacing(0.5),
-    // padding: theme.spacing(0.8),
-    // borderRadius: theme.spacing(0),
     "&:hover": {
-      // backgroundColor: "rgb(198, 220, 239)"
       backgroundColor: "aliceblue"
     }
   },
@@ -47,9 +42,6 @@ export default function ClassCard({ courseName, professor, description }: Class)
             <Typography className="class-card" variant="subtitle1" paragraph>
               {description}
             </Typography>
-            {/* <Typography variant="subtitle1" color="primary">
-              Join Waitlist
-            </Typography> */}
           </CardContent>
         </Card>
       </CardActionArea>
