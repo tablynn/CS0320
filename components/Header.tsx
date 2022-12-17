@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import GoogleOAuth from './GoogleOAuth';
 import { Box, Modal } from '@mui/material';
-import { recommendCourse } from "./api/recommend";
+import { recommendCourse } from "../pages/api/recommend";
 import { useRouter } from 'next/router';
 
 interface HeaderProps {
@@ -15,8 +15,14 @@ interface HeaderProps {
 }
 
 const explanation: string = "Based on your current waitlists, we suggest you take a look at the following course"
-  const instructions: string = "Navigate to a course page and click the lightbulb icon to receive a course recommendation!"
+const instructions: string = "Navigate to a course page and click the lightbulb icon to receive a course recommendation!"
 
+/**
+ * Creates a header for the web application
+ * 
+ * @param props - title of the website
+ * @returns 
+ */
 export default function Header(props: HeaderProps) {
   const { title } = props;
   const router = useRouter();
@@ -56,10 +62,10 @@ export default function Header(props: HeaderProps) {
           {title}
         </Typography>
         <div id="right-side-header">
-          <IconButton onClick={handleOpen}>
-            <TipsAndUpdatesIcon />
+          <IconButton aria-label='Click to receive a recommendation' onClick={handleOpen}>
+            <TipsAndUpdatesIcon/>
           </IconButton>
-          <GoogleOAuth />
+          <GoogleOAuth/>
         </div>
       </Toolbar>
       <Modal
@@ -73,7 +79,8 @@ export default function Header(props: HeaderProps) {
             {coursePage ? explanation : instructions}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {coursePage && (recommendation.at(0) + " (" + recommendation.at(1) + ")")}
+            {coursePage && recommendation.at(0)}
+            {recommendation.at(1) !== undefined && " taught by " + recommendation.at(1)}
           </Typography>
         </Box>
       </Modal>

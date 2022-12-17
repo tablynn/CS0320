@@ -2,13 +2,24 @@ import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react';
 import { Button, Typography, Box, Grid, Stack, Modal } from "@mui/material";
 import WaitlistQueueItem from "./WaitlistQueueItem";
-import { fetchWaitlist } from "../pages/api/fetchWaitlist"
-import { addToWaitlist } from "../pages/api/addStudent"
+import { fetchWaitlist } from "../../pages/api/fetchWaitlist"
+import { addToWaitlist } from "../../pages/api/addStudent"
 
+// Parameters for a queue
 interface WaitlistProps {
     courseName: string;
 }
 
+<<<<<<< HEAD:components/WaitlistQueue.tsx
+=======
+/**
+ * Creates queue for the waitlists, which has a join queue button and displays those
+ * who are currently in the waitlist
+ * 
+ * @param courseName - name of the current pages course 
+ * @returns JSX.Element
+ */
+>>>>>>> 99fe743ebfd45f4daa7e3116c37eb43dc3bbd28a:components/waitlist/WaitlistQueue.tsx
 export default function WaitlistQueue({ courseName }: WaitlistProps) {
     // access current user session
     const { data: session } = useSession();
@@ -27,7 +38,7 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
                 <Typography variant="h6" fontWeight={600}>
                     Queue
                 </Typography>
-                <Button variant="contained" onClick={() => {
+                <Button aria-label="Click to join queue" variant="contained" onClick={() => {
                     addToWaitlist(userName, userEmail, courseName);
                     fetchWaitlist(courseName).then((data) => setWaitlist(data));
                 }}>

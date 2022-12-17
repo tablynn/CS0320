@@ -45,7 +45,7 @@ public class RecommendHandler implements Route{
     // If query parameter is valid run helper handleTables
     if (qm.hasKey("className")){
       String className = qm.value("className");
-      return handleTables(className);
+      return handleTables(className, "waitlist.sqlite3");
     } else {
       return "failure with the provided query parameters";
     }
@@ -57,15 +57,16 @@ public class RecommendHandler implements Route{
    * information about a recommended course in the form of list of strings.
    *
    * @param className - name of class
+   * @param dbName - name of sql file connection is established to
    * @return courseInformation - information for recommended class
    */
-  public String handleTables(String className){
+  public String handleTables(String className, String dbName){
     List<String> courseInformation = new ArrayList<String>();
 
     try {
       // Load the driver and establish a connection to the database
       Class.forName("org.sqlite.JDBC");
-      String urlToDB = "jdbc:sqlite:" + "waitlist.sqlite3";
+      String urlToDB = "jdbc:sqlite:" + dbName;
       Connection conn = DriverManager.getConnection(urlToDB);
       Statement stat = conn.createStatement();
       // Tell the database to enforce foreign keys
@@ -89,6 +90,10 @@ public class RecommendHandler implements Route{
       if(courseValues.containsKey(classID)){
         courseValues.remove(classID);
       }
+
+      System.out.println("courseValues hashmap: " + courseValues);
+      System.out.println("courseValues keys: " + courseValues.keySet());
+      System.out.println("courseValues values: " + courseValues.values());
 
       // If there are no other possible courses to recommend, provide informative statement
       if(courseValues.keySet().isEmpty()){
@@ -211,7 +216,8 @@ public class RecommendHandler implements Route{
         max = entry;
       }
     }
-    return max.getValue();
+    System.out.println("the value being returned by getHighestValCourse is: " + max.getKey());
+    return max.getKey();
   }
 
 

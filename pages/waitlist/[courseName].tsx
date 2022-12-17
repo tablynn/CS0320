@@ -1,11 +1,16 @@
 import React from 'react'
-import Header from '../header'
-import Footer from '../footer';
-import WaitlistHeader from '../../components/WaitlistHeader';
-import WaitlistQueue from '../../components/WaitlistQueue';
+import Header from '../../components/Header'
+import Footer from '../../components/Footer';
+import WaitlistHeader from '../../components/waitlist/WaitlistHeader';
+import WaitlistQueue from '../../components/waitlist/WaitlistQueue';
 import { useRouter } from "next/router";
  
-export default function CourseWaitlist() {
+/**
+ * Page that uses dynamic routing to create unique page for each course 
+ * 
+ * @returns JSX.Element
+ */
+export default function CourseWaitlist(): JSX.Element {
  const router = useRouter();
  const { courseName } = router.query;
  

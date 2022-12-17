@@ -6,7 +6,6 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
-import { classes } from '../mocks/sample_classes';
 
 interface Class {
   courseName: string;
@@ -29,7 +28,7 @@ export default function ClassCard({ courseName, professor, description }: Class)
 
  
   return (
-    <Grid item xs={12} md={6}>
+    <Grid aria-label="Course card" item xs={12} md={6}>
       <CardActionArea component="a" onClick={() => router.push(link)}>
         <Card className={classes.root} sx={{ display: 'flex', borderRadius: '2'}} style={{height: "12rem"}}>
           <CardContent id="all-cards" sx={{ flex: 1}}>
