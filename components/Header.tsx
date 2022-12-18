@@ -9,6 +9,7 @@ import GoogleOAuth from './GoogleOAuth';
 import { Box, Modal } from '@mui/material';
 import { recommendCourse } from "../pages/api/recommend";
 import { useRouter } from 'next/router';
+export {homeButtonAria};
 
 interface HeaderProps {
   title: string;
@@ -17,6 +18,8 @@ interface HeaderProps {
 const explanation: string = "Based on your current waitlists, we suggest you take a look at the following course"
 const instructions: string = "Navigate to a course page and click the lightbulb icon to receive a course recommendation!"
 
+/** The aria label for the overarching REPL component */
+const homeButtonAria: string = "button to return home";
 /**
  * Creates a header for the web application
  * 
@@ -47,7 +50,7 @@ export default function Header(props: HeaderProps) {
       <Toolbar id="toolbar" sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <div id="left-side-header">
           <Link href='/'>
-            <Button size="small">Home</Button>
+            <Button  aria-label={homeButtonAria} size="small">Home</Button>
           </Link>
         </div>
         <Typography
