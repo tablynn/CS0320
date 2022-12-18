@@ -1,8 +1,18 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.squareup.moshi.Moshi;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import okio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,69 +23,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import server.AddStudentHandler;
+import server.GetCourseWaitlistHandler;
+import server.GetCoursesHandler;
+import server.RecommendHandler;
 import server.RemoveStudentHandler;
 import spark.Spark;
 
 
 /**
- * Testing class for GetHandler, LoadHandler and the "loadCSV" and "getCSV" spark requests.
+ *
  */
-public class BackendTest {
-
-  /**
-   * Starts the server before all tests
-   */
-  @BeforeAll
-  public static void setup_before_everything() {
-    Spark.port(0);
-    Logger.getLogger("").setLevel(Level.WARNING); // empty name = root logger
-  }
-
-  /**
-   * Before each test is run, clears shared state this.csvData and sets up Spark.
-   */
-  @BeforeEach
-  public void setup(){
-    // Restart spark
-    //Spark.get("getData", new GetDataHandler();
-    Spark.init();
-    Spark.awaitInitialization();
-  }
-
-  /**
-   * After each test is run, resets Spark.
-   */
-  @AfterEach
-  public void teardown(){
-    // Stops spark form listening on both endpoints
-    // Spark.unmap("getData");
-    Spark.awaitStop();
-  }
-
-  /**
-   * Helper to start a connection to a specific API endpoint/params
-   * @param apiCall the call string, including endpoint
-   * @return the connection for the given URL, just after connecting
-   * @throws IOException if the connection fails for some reason
-   */
-  static private HttpURLConnection tryRequest(String apiCall) throws IOException {
-    // Configure connection (but don't actually send the request yet)
-    URL requestURL = new URL("http://localhost:" + Spark.port() + "/" + apiCall);
-    HttpURLConnection clientConnection = (HttpURLConnection) requestURL.openConnection();
-
-    clientConnection.connect();
-    return clientConnection;
-  }
-
-  /**
-   * Tests that an invalid API call gives an API error.
-   */
-  @Test
-  public void testInvalidAPICall() throws IOException{
-    HttpURLConnection clientConnection = tryRequest("hi");
-    // Don't get an OK response - API provides an error message
-    assertEquals(404, clientConnection.getResponseCode());
-  }
+public class UnitTest {
 
   /**
    * Tests successful addition to a waitlist.
@@ -125,21 +83,33 @@ public class BackendTest {
     assertEquals(expected, result);
   }
 
+  @Test
+  public void testSuccessfulGetCourseWaitlist(){
+    GetCourseWaitlistHandler getCourseWaitlistHandler = new GetCourseWaitlistHandler();
+    Moshi moshi = new Moshi.Builder().build();
+    //returns serialized list
+    Object responses = getCourseWaitlistHandler.handleTables("CSCI 1470:"
+        + " Deep Learning","mock.sqlite3");
+    List<String> tabs = new ArrayList<>(Arrays.asList("Tabitha Lynn","Tabitha_lynn@brown.edu"));
+    List<List<String>> expectString = new ArrayList<>(Arrays.asList(tabs));
+    String expected =
+        moshi.adapter(List.class).toJson(expectString);
+    assertEquals(expected, responses);
+  }
 
+  //NO POSSIBLE RECOMMEDATIONS TEST
+  @Test
+  public void testRecommendHandler(){
+    RecommendHandler recommendHandler = new RecommendHandler();
+    Object responses = recommendHandler.handleTables("CSCI 1470:"
+        + " Deep Learning","mock.sqlite3");
+    List<String> courseInfo = Arrays.asList("No recommendation could be provided because either no other students "
+        + "are on the waitlist for this course or the other students are solely on the waitlist for this course");
+    Moshi moshi = new Moshi.Builder().build();
+    String expected =
+        moshi.adapter(List.class).toJson(courseInfo);
+    assertEquals(expected, responses);
 
+  }
 
 }
-
-
-
-  /**
-   * List of tests
-   * Test that call of addStudent endpoint successfully adds to database and returns new list
-   * with new student
-   *
-   * Test that call of removeStudent scuccessfully removes and returns new list
-   *
-   * test that you can't add urself twice
-   *
-   *
-   */

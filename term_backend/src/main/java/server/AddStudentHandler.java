@@ -155,7 +155,7 @@ public class AddStudentHandler implements Route{
    * @return studentExistsInEnrollmentsWithCorrectClass - boolean value
    * @throws SQLException
    */
-  private Boolean checkIfStudentExistsInEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, Integer classID)
+  public Boolean checkIfStudentExistsInEnrollments(PreparedStatement prep, Connection conn, ResultSet rs, Integer studentID, Integer classID)
       throws SQLException {
     prep = conn.prepareStatement("select * from enrollments WHERE student_id = ?");
     prep.setInt(1, studentID);
