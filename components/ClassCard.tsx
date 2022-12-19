@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 interface Class {
   courseName: string;
   professor: string;
+  email: string;
   description: string;
 }
 
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
  
-export default function ClassCard({ courseName, professor, description }: Class) {
+export default function ClassCard({ courseName, professor, email, description }: Class) {
   const router = useRouter();
   const link: string = "/waitlist/" + courseName;
   const classes = useStyles();
@@ -36,7 +37,7 @@ export default function ClassCard({ courseName, professor, description }: Class)
               {courseName}
             </Typography>
             <Typography className="class-card" variant="subtitle1" color="text.secondary">
-              {professor}
+              {professor} ({email})
             </Typography>
             <Typography className="class-card" variant="subtitle1" paragraph>
               {description}

@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom'
 import Header, {homeButtonAria} from "../components/Header";
 
-// Setup to make sure the page gets rendered
+// // Setup to make sure the page gets rendered
 // beforeEach(() => {
 //     render(<Home/>);
 // });

@@ -5,10 +5,11 @@ import Header from '../components/Header'
 import ClassCard from '../components/ClassCard';
 import Footer from '../components/Footer'
 import fetchCourses from './api/getCourses';
+import { Description } from '@mui/icons-material';
 
 export default function Home() {
   // fetches and stores the courses to be displayed on screen
-  const [courses, setCourses] = useState<[string, string, string][]>([]);
+  const [courses, setCourses] = useState<[string, string, string, string][]>([]);
   useEffect(() => {
     fetchCourses().then((data) => setCourses(data))
   }, [])
@@ -19,7 +20,7 @@ export default function Home() {
       <br></br>
       <Grid container spacing={4}>
         {courses.map((course) => (
-          <ClassCard key={course.at(0)} courseName={course.at(0)} professor={course.at(1)} description={course.at(2)} />
+          <ClassCard key={course.at(0)} courseName={course.at(0)} professor={course.at(1)} description={course.at(2)} email={course.at(3)}/>
         ))}
       </Grid>
       <Footer title='Created by Calvin Eng' description='with minimal help from Tabitha Lynn' />
