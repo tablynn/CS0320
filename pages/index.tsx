@@ -20,7 +20,8 @@ export default function Home() {
       <br></br>
       <Grid container spacing={4}>
         {courses.map((course) => (
-          <ClassCard key={course.at(0)} courseName={course.at(0)} professor={course.at(1)} description={course.at(2)} email={course.at(3)}/>
+          <ClassCard key={course.at(0)} courseName={course.at(0) as string} professor={course.at(1) as string} 
+            description={course.at(2) as string} email={course.at(3) as string}/>
         ))}
       </Grid>
       <Footer title='Created by Calvin Eng' description='with minimal help from Tabitha Lynn' />

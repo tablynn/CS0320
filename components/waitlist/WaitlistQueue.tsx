@@ -20,14 +20,14 @@ interface WaitlistProps {
 export default function WaitlistQueue({ courseName }: WaitlistProps) {
     // access current user session
     const { data: session } = useSession();
-    const userName: string = session?.user?.name;
-    const userEmail: string = session?.user?.email;
+    const userName: string = session?.user?.name as string;
+    const userEmail: string = session?.user?.email as string;
 
     // fetches and stores the current waitlist in order to display on page
     const [waitlist, setWaitlist] = useState<[string, string][]>([]);
     useEffect(() => {
         fetchWaitlist(courseName).then((data) => setWaitlist(data))
-    }, [setWaitlist])
+    }, [])
 
     return (
         <Grid item xs={12} md={9}>
@@ -45,8 +45,9 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
             <Box mt={1}>
                 <Stack spacing={1}>
                     {waitlist.map((student, index) => (
-                        <WaitlistQueueItem key={student.at(0)} name={student.at(0)} email={student.at(1)}
-                            courseName={courseName} position={index + 1} setWaitlist={setWaitlist} />
+                        <WaitlistQueueItem key={student.at(0) as string} name={student.at(0) as string} 
+                            email={student.at(1) as string} courseName={courseName} position={index + 1} 
+                            setWaitlist={setWaitlist} />
                     ))}
                 </Stack>
             </Box>

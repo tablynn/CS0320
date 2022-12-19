@@ -97,7 +97,7 @@ public class RecommendHandler implements Route{
 
       // If there are no other possible courses to recommend, provide informative statement
       if(courseValues.keySet().isEmpty()){
-        courseInformation.add("No recommendation could be provided because either no other students are on the waitlist for this course or the other students are solely on the waitlist for this course");
+        courseInformation.add("No recommendation could be provided for this course.");
       } else {
         // Find the classID that the most students are also enrolled in (recommendedClassID)
         Integer recommendedClassID = this.getHighestValCourse(courseValues);
