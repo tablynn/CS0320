@@ -42,33 +42,83 @@ public class dbJ {
 
   //Add to the classes table data for 4 rows
     prep = conn.prepareStatement(
-        "INSERT INTO classes VALUES (?, ?, ?,?,?);");
+        "INSERT INTO classes VALUES (?, ?, ?, ?, ?);");
+
     prep.setInt(1, 1);
-    prep.setString(2, "CSCI 0320: Introduction to Software Engineering");
-    prep.setString(3, "Tim Nelson");
-    prep.setString(4, "tn@cs.brown.edu");
-    prep.setString(5,"Focuses on designing, building, testing, and maintaining systems collaboratively.");
+    prep.setString(2, "CSCI 0130: User Interfaces and User Experience");
+    prep.setString(3, "Talie Massachi");
+    prep.setString(4, "talie_massachi@brown.edu");
+    prep.setString(5, "In this course, students will learn the principles of user experience design, methods for designing and prototyping interfaces, and user interface evaluation.");
     prep.addBatch();
 
     prep.setInt(1, 2);
-    prep.setString(2, "CSCI 0330: Fundamentals of Computer Systems");
-    prep.setString(3, "Malte Schwarzkopf");
-    prep.setString(4, "malte_schwarzkopf@brown.edu");
-    prep.setString(5,"Covers fundamental concepts, principles, and abstractions that underlie the design and engineering of computer systems.");
+    prep.setString(2, "CSCI 0320: Introduction to Software Engineering");
+    prep.setString(3, "Tim Nelson");
+    prep.setString(4, "timothy_nelson@brown.edu");
+    prep.setString(5,"Focuses on designing, building, testing, and maintaining systems collaboratively.");
     prep.addBatch();
 
     prep.setInt(1, 3);
-    prep.setString(2, "CSCI 0190: Accelerated Introduction to CS");
-    prep.setString(3, "Tim Nelson");
-    prep.setString(4, "tn@cs.brown.edu");
-    prep.setString(5,"A one-semester introduction to CS covering programming integrated with core data structures, algorithms, and analysis techniques.");
+    prep.setString(2, "CSCI 1280: Intermediate 3D Computer Animation");
+    prep.setString(3, "Barbara J Meier");
+    prep.setString(4, "barbara_meier@brown.edu");
+    prep.setString(5, "Continues work begun in CSCI 1250 with deeper exploration of technical and artistic aspects of 3D computer animation.");
     prep.addBatch();
 
     prep.setInt(1, 4);
-    prep.setString(2, "CSCI 1470: Deep Learning");
-    prep.setString(3, "Ritambhara Singh");
-    prep.setString(4, "ritambhara_singh@brown.edu");
-    prep.setString(5,"In this course, you will get an overview of the prominent techniques of deep learning and their applications.");
+    prep.setString(2, "CSCI 1380: Distributed Computer Systems");
+    prep.setString(3, "Nikos Vasilakis");
+    prep.setString(4, "nikos_vasilakis@brown.edu");
+    prep.setString(5, "Explores the fundamental principles and practice underlying networked information systems.");
+    prep.addBatch();
+
+    prep.setInt(1, 5);
+    prep.setString(2, "CSCI 1420: Machine Learning");
+    prep.setString(3, "Stephen Back");
+    prep.setString(4, "stephen_bach@brown.edu");
+    prep.setString(5, "We explore the theory and practice of statistical machine learning, focusing on computational methods for supervised and unsupervised learning.");
+    prep.addBatch();
+
+    prep.setInt(1, 6);
+    prep.setString(2, "CSCI 1440: Algorithmic Game Theory");
+    prep.setString(3, "Amy R Greenwald");
+    prep.setString(4, "amy_greenwald@brown.edu");
+    prep.setString(5, "This course examines topics in game theory and mechanism design from a computer scientist's perspective.");
+    prep.addBatch();
+
+    prep.setInt(1, 7);
+    prep.setString(2, "CSCI 1660: Introduction to Computer Systems Security");
+    prep.setString(3, "Bernardo Palazzi");
+    prep.setString(4, "bernardo_palazzi@brown.edu");
+    prep.setString(5, "This course teaches principles of computer security from an applied viewpoint and provides hands-on experience on security threats and countermeasures.");
+    prep.addBatch();
+
+    prep.setInt(1, 8);
+    prep.setString(2, "CSCI 1950U: Topics in 3D Game Engine Development");
+    prep.setString(3, "Daniel C Ritchie");
+    prep.setString(4, "daniel_ritchie@brown.edu");
+    prep.setString(5, "Covers core techniques in 3D game development with an emphasis on engine architecture.");
+    prep.addBatch();
+
+    prep.setInt(1, 9);
+    prep.setString(2, "CSCI 1951A: Data Science");
+    prep.setString(3, "Lorenzo De Stefani");
+    prep.setString(4, "lorenzo_destefani@brown.edu");
+    prep.setString(5, "This course provides an overview of techniques and tools involved and how they work together.");
+    prep.addBatch();
+
+    prep.setInt(1, 10);
+    prep.setString(2, "CSCI 1951I: CS for Social Change");
+    prep.setString(3, "Lachlan Kermode");
+    prep.setString(4, "lachlan_kermode@brown.edu");
+    prep.setString(5, "Students will be placed in small teams to collaboratively work on projects that will range from developing a chatbot to aid community engagement to conducting geospatial data analytics.");
+    prep.addBatch();
+
+    prep.setInt(1, 11);
+    prep.setString(2, "CSCI 1952Q: Algorithmic Aspects of Machine Learning");
+    prep.setString(3, "Yu Cheng");
+    prep.setString(4, "yu_cheng@brown.edu");
+    prep.setString(5, "In this course, we will explore the theoretical foundations of machine learning and deep learning.");
     prep.addBatch();
 
     prep.executeBatch();
@@ -87,12 +137,12 @@ public class dbJ {
         "INSERT INTO students VALUES (?, ?, ?);");
     prep.setInt(1, 1);
     prep.setString(2, "Tabitha Lynn");
-    prep.setString(3, "tlynn1@brown.edu");
+    prep.setString(3, "tabitha_lynn@brown.edu");
     prep.addBatch();
 
     prep.setInt(1, 2);
     prep.setString(2, "Calvin Eng");
-    prep.setString(3, "ceng4@brown.edu");
+    prep.setString(3, "calvin_eng@brown.edu");
     prep.addBatch();
 
     prep.setInt(1, 3);
@@ -102,7 +152,37 @@ public class dbJ {
 
     prep.setInt(1, 4);
     prep.setString(2, "Aanya Hudda");
-    prep.setString(3, "ahudda1@brown.edu");
+    prep.setString(3, "aanya_hudda@brown.edu");
+    prep.addBatch();
+
+    prep.setInt(1, 5);
+    prep.setString(2, "Tanya Qu");
+    prep.setString(3, "tanya_qu@brown.edu");
+    prep.addBatch();
+
+    prep.setInt(1, 6);
+    prep.setString(2, "Klara Davidson-Schmich");
+    prep.setString(3, "klara_davidson-schmich@brown.edu");
+    prep.addBatch();
+
+    prep.setInt(1, 7);
+    prep.setString(2, "Cole Griscom");
+    prep.setString(3, "cole_griscom@brown.edu");
+    prep.addBatch();
+
+    prep.setInt(1, 8);
+    prep.setString(2, "Grace Samaha");
+    prep.setString(3, "grace_samaha@brown.edu");
+    prep.addBatch();
+
+    prep.setInt(1, 9);
+    prep.setString(2, "Jennifer Tran");
+    prep.setString(3, "jennifer_tran1@brown.edu");
+    prep.addBatch();
+
+    prep.setInt(1, 10);
+    prep.setString(2, "Alissa Simon");
+    prep.setString(3, "alissa_simon@brown.edu");
     prep.addBatch();
 
     prep.executeBatch();
