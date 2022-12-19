@@ -1,26 +1,26 @@
 import { Button } from "@mui/material"
 import { useSession, signIn, signOut } from "next-auth/react"
 
+/**
+ * Creates a Google authentication sign in and sign out button for the header. 
+ * @returns a sign in/sign out button
+ */
 export default function GoogleOAuth() {
   const { data: session } = useSession()
+  // if the user is already signed in, then returns a sign out button and the user's profile image
   if (session) {
     console.log(session?.user?.image)
     return (
       <>
-        {/* Signed in as {session?.user?.email} <br /> */}
-        
-        {/* <Image src={session?.user?.image} alt="" width="10" height="10"/> */}
         <Button variant="outlined" onClick={() => signOut()}>SIGN OUT</Button> 
         <img src={session?.user?.image} id ="profile-image" referrerPolicy="no-referrer"></img>
         
       </>
     )
   }
+  // if the user isn't signed in, returns just a sign in button
   return (
     <>
-      {/* Not signed in <br /> */}
-      {/* <img src={session?.user?.image} id ="profile-image"></img> */}
-      {/* <Image src={session?.user?.image} alt="image"/> */}
       <Button variant="outlined"  onClick={() => signIn()}>SIGN IN</Button>
     </>
   )

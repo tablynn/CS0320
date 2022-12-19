@@ -3,12 +3,12 @@ import { render, screen } from '@testing-library/react';
 import Home from '../public/pages/index';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-// import {homeButtonAria} from "../components/Header";
+ import {homeButtonAria} from "../components/Header";
 
-// // Setup to make sure the page gets rendered
-// beforeEach(() => {
-//     render(<Home/>);
-// });
+// Setup to make sure the page gets rendered
+beforeEach(() => {
+    render(<Home/>);
+});
 
 test('basic test', () => {
     expect(2+2).toBe(4)
