@@ -88,8 +88,8 @@ public class dbJ {
 
     prep.setInt(1, 7);
     prep.setString(2, "CSCI 1660: Introduction to Computer Systems Security");
-    prep.setString(3, "Bernardo Palazzi and Nicholas Anthony Frank DeMarinis");
-    prep.setString(4, "bernardo_palazzi@brown.edu and nicholas_demarinis@brown.edu");
+    prep.setString(3, "Bernardo Palazzi");
+    prep.setString(4, "bernardo_palazzi@brown.edu");
     prep.setString(5, "This course teaches principles of computer security from an applied viewpoint and provides hands-on experience on security threats and countermeasures.");
     prep.addBatch();
 
