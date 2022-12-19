@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react';
 import { Button, Typography, Box, Grid, Stack, Modal } from "@mui/material";
 import WaitlistQueueItem from "./WaitlistQueueItem";
-import { fetchWaitlist } from "../../pages/api/fetchWaitlist"
-import { addToWaitlist } from "../../pages/api/addStudent"
+import { fetchWaitlist } from "../../src/public/pages/api/fetchWaitlist"
+import { addToWaitlist } from "../../src/public/pages/api/addStudent"
 
 // Parameters for a queue
 interface WaitlistProps {

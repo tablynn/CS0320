@@ -1,7 +1,7 @@
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { fetchWaitlist } from "../../pages/api/fetchWaitlist"
-import { removeFromWaitlist } from "../../pages/api/removeStudent"
+import { fetchWaitlist } from "../../src/public/pages/api/fetchWaitlist"
+import { removeFromWaitlist } from "../../src/public/pages/api/removeStudent"
 
 // Parameters for a queue item
 interface StudentProps {
