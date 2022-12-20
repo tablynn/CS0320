@@ -22,12 +22,13 @@ interface StudentProps {
 export default function WaitlistQueueItem({ name, email, position, courseName, setWaitlist }: StudentProps) {
     // access current user session
     const { data: session } = useSession();
-    const userName = session?.user?.name;
-    const userEmail = session?.user?.email;
+    const userName: string = session?.user?.name as string;
+    const userEmail: string = session?.user?.email as string;
 
-    const removeButton: JSX.Element = <Button color="error" onClick={() => {
-        removeFromWaitlist(userName, userEmail, courseName)
-        fetchWaitlist(courseName).then((data) => setWaitlist(data));
+    const removeButton: JSX.Element = <Button color="error" aria-label="click to remove yourself from the waitlist" 
+        onClick={() => {
+            removeFromWaitlist(userName, userEmail, courseName)
+            fetchWaitlist(courseName).then((data) => setWaitlist(data));
     }}> X </Button>
 
     return (
