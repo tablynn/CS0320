@@ -29,18 +29,20 @@ export default function WaitlistQueue({ courseName }: WaitlistProps) {
         fetchWaitlist(courseName).then((data) => setWaitlist(data))
     }, [])
 
+    const joinQueue = <Button aria-label="Click to join queue" variant="contained" onClick={() => {
+            addToWaitlist(userName, userEmail, courseName);
+            fetchWaitlist(courseName).then((data) => setWaitlist(data));
+        }}>
+            Join Queue
+        </Button>
+
     return (
         <Grid item xs={12} md={9}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="h6" fontWeight={600}>
                     Queue
                 </Typography>
-                <Button aria-label="Click to join queue" variant="contained" onClick={() => {
-                    addToWaitlist(userName, userEmail, courseName);
-                    fetchWaitlist(courseName).then((data) => setWaitlist(data));
-                }}>
-                    Join Queue
-                </Button>
+                {userEmail !== undefined && joinQueue}
             </Stack>
             <Box mt={1}>
                 <Stack spacing={1}>
