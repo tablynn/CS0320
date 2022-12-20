@@ -214,13 +214,163 @@ public class dbJ {
     prep.addBatch();
 
     prep.setInt(1, 301);
+    prep.setInt(2, 4);
+    prep.setInt(3, 1);
+    prep.addBatch();
+
+    prep.setInt(1, 302);
+    prep.setInt(2, 9);
+    prep.setInt(3, 1);
+    prep.addBatch();
+
+    prep.setInt(1, 303);
+    prep.setInt(2, 10);
+    prep.setInt(3, 1);
+    prep.addBatch();
+
+    prep.setInt(1, 304);
     prep.setInt(2, 2);
     prep.setInt(3, 2);
     prep.addBatch();
 
-    prep.setInt(1, 302);
+    prep.setInt(1, 305);
     prep.setInt(2, 3);
+    prep.setInt(3, 2);
+    prep.addBatch();
+
+    prep.setInt(1, 306);
+    prep.setInt(2, 5);
+    prep.setInt(3, 2);
+    prep.addBatch();
+
+    prep.setInt(1, 307);
+    prep.setInt(2, 6);
+    prep.setInt(3, 2);
+    prep.addBatch();
+
+    prep.setInt(1, 308);
+    prep.setInt(2, 7);
+    prep.setInt(3, 2);
+    prep.addBatch();
+
+    prep.setInt(1, 309);
+    prep.setInt(2, 8);
+    prep.setInt(3, 2);
+    prep.addBatch();
+
+    prep.setInt(1, 310);
+    prep.setInt(2, 1);
     prep.setInt(3, 3);
+    prep.addBatch();
+
+    prep.setInt(1, 311);
+    prep.setInt(2, 2);
+    prep.setInt(3, 3);
+    prep.addBatch();
+
+    prep.setInt(1, 312);
+    prep.setInt(2, 5);
+    prep.setInt(3, 3);
+    prep.addBatch();
+
+    prep.setInt(1, 313);
+    prep.setInt(2, 10);
+    prep.setInt(3, 3);
+    prep.addBatch();
+
+    prep.setInt(1, 314);
+    prep.setInt(2, 2);
+    prep.setInt(3, 4);
+    prep.addBatch();
+
+    prep.setInt(1, 315);
+    prep.setInt(2, 4);
+    prep.setInt(3, 4);
+    prep.addBatch();
+
+    prep.setInt(1, 316);
+    prep.setInt(2, 6);
+    prep.setInt(3, 4);
+    prep.addBatch();
+
+    prep.setInt(1, 317);
+    prep.setInt(2, 8);
+    prep.setInt(3, 4);
+    prep.addBatch();
+
+    prep.setInt(1, 318);
+    prep.setInt(2, 10);
+    prep.setInt(3, 4);
+    prep.addBatch();
+
+    prep.setInt(1, 319);
+    prep.setInt(2, 1);
+    prep.setInt(3, 5);
+    prep.addBatch();
+
+    prep.setInt(1, 320);
+    prep.setInt(2, 3);
+    prep.setInt(3, 5);
+    prep.addBatch();
+
+    prep.setInt(1, 321);
+    prep.setInt(2, 5);
+    prep.setInt(3, 5);
+    prep.addBatch();
+
+    prep.setInt(1, 322);
+    prep.setInt(2, 7);
+    prep.setInt(3, 5);
+    prep.addBatch();
+
+    prep.setInt(1, 323);
+    prep.setInt(2, 9);
+    prep.setInt(3, 5);
+    prep.addBatch();
+
+    prep.setInt(1, 324);
+    prep.setInt(2, 4);
+    prep.setInt(3, 6);
+    prep.addBatch();
+
+    prep.setInt(1, 325);
+    prep.setInt(2, 4);
+    prep.setInt(3, 7);
+    prep.addBatch();
+
+    prep.setInt(1, 326);
+    prep.setInt(2, 8);
+    prep.setInt(3, 8);
+    prep.addBatch();
+
+    prep.setInt(1, 327);
+    prep.setInt(2, 2);
+    prep.setInt(3, 8);
+    prep.addBatch();
+
+    prep.setInt(1, 328);
+    prep.setInt(2, 3);
+    prep.setInt(3, 8);
+    prep.addBatch();
+
+    prep.setInt(1, 329);
+    prep.setInt(2, 2);
+    prep.setInt(3, 9);
+    prep.addBatch();
+
+    prep.setInt(1, 330);
+    prep.setInt(2, 7);
+    prep.setInt(3, 9);
+    prep.addBatch();
+
+    prep.setInt(1, 331);
+    prep.setInt(2, 1);
+    prep.setInt(3, 10);
+    prep.addBatch();
+
+    prep.setInt(1, 332);
+    prep.setInt(2, 1);
+    prep.setInt(3, 11);
     prep.addBatch();
     prep.executeBatch();
   }
