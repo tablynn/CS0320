@@ -39,8 +39,11 @@ public class AddStudentHandler implements Route{
       String studentName = qm.value("studentName");
       String studentEmail = qm.value("email");
       String className = qm.value("className");
-      return handleTables(studentName, studentEmail, className, "waitlist.sqlite3");
-
+      if(studentName.equals("undefined")){
+        return "";
+      } else {
+        return handleTables(studentName, studentEmail, className, "waitlist.sqlite3");
+      }
     } else {
       return "failure with the provided query parameters";
     }
