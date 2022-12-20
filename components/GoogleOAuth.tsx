@@ -13,7 +13,7 @@ export default function GoogleOAuth() {
     return (
       <>
         <Button variant="outlined" onClick={() => signOut()}>SIGN OUT</Button> 
-        <img src={session?.user?.image} id ="profile-image" referrerPolicy="no-referrer"></img>
+        <img src={session?.user?.image as string} id ="profile-image" referrerPolicy="no-referrer"></img>
         
       </>
     )

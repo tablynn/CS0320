@@ -76,6 +76,6 @@ public class SeleniumTest {
   @Test
   public void testCorrect() {
     driver.get(indexPath);
-    assertEquals("Can You Guess The Sequence?", driver.getTitle());
+    assertEquals("Computer Science Course Waitlists", driver.getTitle());
   }
 }
