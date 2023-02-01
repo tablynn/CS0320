@@ -22,7 +22,6 @@ export default function Home() {
           <ClassCard key={course.at(0)} courseName={course.at(0)} professor={course.at(1)} description={course.at(2)} />
         ))}
       </Grid>
-      <Footer title='Created by Calvin Eng' description='with minimal help from Tabitha Lynn' />
     </div>
   );
 }
